@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 20:55:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/13 22:07:32 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/14 21:44:09 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ typedef struct s_table
 typedef struct s_philo
 {
 	int	philo_id;     //철학자 식별 코드
-	int	seat_num;     //좌석 번호(필요?)
-	int	status;       //0 - 먹기, 1 - 자기, 2 - 생각하기 3 - 죽음
-	int	fork_cnt;     //철학자가 가지고 있는 포크 개수
+	int	seat_num;     //좌석 번호
+	int	*left_fork;   //철학자가 가지고 있는 포크
+	int	*right_fork;  //철학자가 가지고 있는 포크
 }	t_philo;
 
 void	parsing_arg(char **av, t_table *table);

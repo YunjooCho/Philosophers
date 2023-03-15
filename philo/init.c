@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:25:19 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/13 22:12:28 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/14 21:44:55 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	parsing_arg(char **av, t_table *table)
 	int	result;
 
 	idx = 0;
+	//0. 인자 검사 funtion 추가
 	//1. 구조체 초기화
 	while (av[idx])
 	{
@@ -80,7 +81,7 @@ int	ph_atoi(char *str)
 	if (str[i] == '+' || str[i] == '-')
 	{
 		if (!is_plus_minus(str, i))
-			return ();
+			return (-1);
 		n = n * is_plus_minus(str, i);
 		i++;
 	}
