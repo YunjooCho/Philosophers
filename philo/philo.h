@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 20:55:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/14 21:44:09 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/20 21:12:31 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h>
 # include <pthread.h>
 
-//프로세스?
+//프로세스
 typedef struct s_table
 {
 	int	philo_cnt;     //철학자 수(number_of_philosophers)
@@ -38,6 +38,8 @@ typedef struct s_philo
 	int	*left_fork;   //철학자가 가지고 있는 포크
 	int	*right_fork;  //철학자가 가지고 있는 포크
 }	t_philo;
+
+
 
 void	parsing_arg(char **av, t_table *table);
 void	init_table(int idx, int result, t_table *table);

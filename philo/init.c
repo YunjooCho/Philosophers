@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:25:19 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/15 20:40:12 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/20 22:08:54 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,23 @@ void	parsing_arg(char **av, t_table *table)
 	int	idx;
 	int	result;
 
-	idx = 0;
+	idx = 1;
 	//0. 인자 검사 funtion 추가
-	//1. 구조체 초기화
+	//1. 파싱 및 인자값을 구조체에 초기화
 	while (av[idx])
 	{
 		result = ph_atoi(av[idx]);
+		if (result == -1)
+		{
+			printf("Error\n");
+			return ;
+		}
 		init_table(idx, result, table);
 		idx++;
 	}
 	print_table(table);
 	//2. 철학자 수 만큼 thread 생성
-	// create_philo();
+	create_philo(table);
 	//3. 포크 배열로 식별 번호 지정 및 사용 유무 표시?
 }
 
@@ -46,8 +51,6 @@ int	is_plus_minus(char *str, int i)
 	idx = i;
 	if (!is_digit(str[idx + 1]))
 		return (0);
-	if (str[idx] == '-')
-		return (-1);
 	return (1);
 }
 
@@ -78,12 +81,15 @@ int	ph_atoi(char *str)
 	i = 0;
 	n = 1;
 	result = 0;
-	if (str[i] == '+' || str[i] == '-')
+	
+	if (str[i] == '-')
+		return (-1);
+	if (str[i] == '+')
 	{
 		if (!is_plus_minus(str, i))
 			return (-1);
-		n = n * is_plus_minus(str, i);
-		i++;
+		else
+			i++;
 	}
 	while (str[i])
 	{
