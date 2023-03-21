@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:30:04 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/21 18:28:31 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/21 18:35:11 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,9 @@ int	init_philo(t_philo *philo, int idx)
 	philo->left_fork = NULL;
 	philo->right_fork = NULL;
 	philo->thread = NULL;
+
 	result = pthread_create(&thread, NULL, tmp_print, &idx);
+	printf("init philo idx : %d, result : %d\n", idx + 1, result);
 	if (result < 0)
 		return (result);
 	philo->thread = &thread;
@@ -76,7 +78,7 @@ int	init_philo(t_philo *philo, int idx)
 
 void	*tmp_print(void *idx)
 {
-	int *i = (int *)idx;
-	printf("Hi! Thread %d\n", *i);
+	(void)idx;
+	printf("Hi! Thread\n");
 	return (NULL);
 }
