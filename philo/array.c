@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   thread.c                                           :+:      :+:    :+:   */
+/*   array.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/21 12:09:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/21 18:19:01 by yunjcho          ###   ########.fr       */
+/*   Created: 2023/03/21 17:46:47 by yunjcho           #+#    #+#             */
+/*   Updated: 2023/03/21 18:26:55 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	create_threads(t_table *table, t_philo **philos, t_fork **forks)
+t_philo	**create_philosarr(int philo_cnt)
 {
-	int	idx;
+	t_philo	**philo_arr;
 
-	idx = 0;
-	while(idx < table->philo_cnt)
-	{
-		if (init_forks(forks[idx]) == -1)
-			return ;
-		if (init_philo(philos[idx], idx) == -1)
-			return ;
-		idx++;
-	}
+	philo_arr = malloc((sizeof(t_philo **) * philo_cnt));
+	if (!philo_arr)
+		return (NULL);
+	return (philo_arr);
+}
+
+t_fork	**create_forksarr(int philo_cnt)
+{
+	t_fork	**forks_arr;
+
+	forks_arr = malloc((sizeof(t_fork **) * philo_cnt));
+	if (!forks_arr)
+		return (NULL);
+	return (forks_arr);
 }
