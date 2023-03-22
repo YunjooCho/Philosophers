@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 20:55:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/22 23:21:47 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/03/22 23:29:51 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
+
+# define EATING 0
+# define SLEEPING 1
+# define THINKING 2
 
 typedef struct s_table
 {

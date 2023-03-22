@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:11:25 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/22 23:25:41 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/03/22 23:40:49 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,11 @@ int	main(int ac, char **av)
 		printf("Init Arrays Fail\n");
 		return (1);
 	}
-	print_philos(table.philo_cnt, philos);
+	print_philos(table.philo_cnt, philos);//TODO - 데이터 정상입력 확인용, 추후 삭제
 	
-	//4. create monitoring thread
+	//4. create eating function
+	//5. create monitoring thread
+	
 	return (0);
 }
 
