@@ -6,28 +6,30 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:46:47 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/21 18:38:33 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/22 22:42:53 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo	**create_philosarr(int philo_cnt)
+t_philo	**malloc_philosarr(int philos_cnt)
 {
-	t_philo	**philo_arr;
+	t_philo	**philos_arr;
 
-	philo_arr = malloc((sizeof(t_philo **) * (philo_cnt+1)));
-	if (!philo_arr)
-		return (NULL);
-	return (philo_arr);
+	philos_arr = NULL;
+	philos_arr = (t_philo **)malloc((sizeof(t_philo *) * philos_cnt));
+	if (!philos_arr)
+		return (philos_arr);
+	return (philos_arr);
 }
 
-t_fork	**create_forksarr(int philo_cnt)
+t_fork	**malloc_forksarr(int forks_cnt)
 {
 	t_fork	**forks_arr;
 
-	forks_arr = malloc((sizeof(t_fork **) * (philo_cnt+1)));
+	forks_arr = NULL;
+	forks_arr = (t_fork **)malloc((sizeof(t_fork *) * forks_cnt));
 	if (!forks_arr)
-		return (NULL);
+		return (forks_arr);
 	return (forks_arr);
 }

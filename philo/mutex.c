@@ -1,45 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   thread.c                                           :+:      :+:    :+:   */
+/*   mutex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/21 12:09:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/22 23:15:52 by yunjcho          ###   ########seoul.kr  */
+/*   Created: 2023/03/22 23:10:26 by yunjcho           #+#    #+#             */
+/*   Updated: 2023/03/22 23:21:52 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo	*create_philothreads(int idx)
+t_fork	*create_forkmutexs(void)
 {
-	int			result;
-	pthread_t	thread;
-	t_philo		*new;
-	
-	new = NULL;
-	new = (t_philo *)malloc(sizeof(t_philo));
+    int     result;
+	t_fork	*new;
+
+    result = 0;
+    new = NULL;
+	new = (t_fork *)malloc(sizeof(t_fork));
 	if (!new)
 	{
 		printf("Fork Malloc Fail\n");
 		return (new);
 	}
-	init_philo(new, idx);
-	result = pthread_create(&thread, NULL, tmp_print, &idx);
-	printf("init philo idx : %d, result : %d\n", idx + 1, result);
-	if (result < 0)
+	result = pthread_mutex_init(&new->fork_lock, NULL);
+	if (result == -1)
 	{
-		free(new);
+		printf("Mutex Init Error\n");
+        free(new);
 		return (new);
 	}
-	new->thread = &thread;
+	new->used = 0;
 	return (new);
 }
 
-void	*tmp_print(void *idx)
-{
-	int *ch = (int *)idx;
-	printf("Hi! %d Thread\n", *ch);
-	return (NULL);
-}
+// void	ft_usleep(int time)
+// {
+// }

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 20:55:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/21 18:18:45 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/22 23:21:47 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,21 +53,20 @@ int		is_digit(int c);
 int		is_plus_minus(char *str, int i);
 int		ph_atoi(char *str);
 
-void	print_table(t_table *table);
-void	print_philos(int cnt, t_philo **philos);
+t_philo	**malloc_philosarr(int philo_cnt);
+t_fork	**malloc_forksarr(int philo_cnt);
 
 void	init_table(int idx, int result, t_table *table);
+int		init_arrays(t_table *table, t_philo **philos, t_fork **forks);
+void	init_philo(t_philo *new, int idx);
 int		init_forks(t_fork *fork);
-int		init_philo(t_philo *philo, int idx);
 
-t_philo	**create_philosarr(int philo_cnt);
-t_fork	**create_forksarr(int philo_cnt);
-
-void	create_threads(t_table *table, t_philo **philos, t_fork **forks);
+t_philo	*create_philothreads(int idx);
 void	*tmp_print(void *idx);
 
-// void	ft_usleep(int time)
-// {
-// }
+t_fork	*create_forkmutexs(void);
+
+void	print_table(t_table *table);
+void	print_philos(int cnt, t_philo **philos);
 
 #endif

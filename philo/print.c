@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:57:39 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/21 18:27:59 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/22 23:20:15 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ void	print_table(t_table *table)
 
 void	print_philos(int cnt, t_philo **philos)
 {
-	int	i;
+	int	idx;
 
-	i = 0;
-	while (i < cnt)
+	idx = 0;
+	while (idx < cnt)
 	{
-		printf("philos[%d] status : %d, left_fork : %p, right_fork : %p\n", \
-		philos[i]->philo_id, philos[i]->status, philos[i]->left_fork, philos[i]->right_fork);
-		i++;
+		printf("philos[%d] status : %d, eat_cnt : %d, left_fork : %p, right_fork : %p, thread : %p\n", \
+		philos[idx]->philo_id, philos[idx]->status, philos[idx]->eat_cnt, philos[idx]->left_fork, philos[idx]->right_fork, philos[idx]->thread);
+		idx++;
 	}
 }
