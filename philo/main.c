@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:11:25 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/22 23:40:49 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/03/23 01:07:26 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main(int ac, char **av)
 		printf("Array Malloc Fail\n");
 		return (1);
 	}
-	
+
 	//3. thread
 	if (init_arrays(&table, philos, forks) == -1)
 	{
