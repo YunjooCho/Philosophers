@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 20:55:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/23 18:06:38 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/23 22:22:35 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 # define EATING 0
 # define SLEEPING 1
@@ -65,8 +66,8 @@ void	init_philo(t_philo *new, int idx);
 t_philo	**malloc_philosarr(int philos_cnt);
 t_fork	**malloc_forksarr(int forks_cnt);
 
-t_philo	*create_philothreads(int idx);
-void	*tmp_print(void *idx);
+t_philo	*create_philothreads(int thread_cnt, int idx);
+void 	*task(void *idx_addr);
 
 t_fork	*create_forkmutexs(void);
 

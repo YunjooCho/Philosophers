@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:30:04 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/23 16:52:20 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/23 21:11:10 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ void	init_table(int idx, int result, t_table *table)
 
 int	init_arrays(t_table *table, t_philo **philos, t_fork **forks)
 {
-	int	idx;
+	int	idx; 
 
 	idx = 0;
 	while (idx < table->philo_cnt)
 	{
-		philos[idx] = create_philothreads(idx);
+		philos[idx] = create_philothreads(table->philo_cnt, idx);
 		forks[idx] = create_forkmutexs();
 		if (!philos[idx] || !forks[idx])
 			return (-1);

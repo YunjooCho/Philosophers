@@ -6,7 +6,7 @@
 #    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/03/22 23:14:34 by yunjcho          ###   ########seoul.kr   #
+#    Updated: 2023/03/23 20:56:48 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ CFLAGS = -Wall -Werror -Wextra
 SRCS = main.c parsing.c init.c array.c thread.c mutex.c print.c
 OBJS = $(SRCS:.c=.o)
 DBJS = $(SRCS:.c=.d)
+# -lpthread (Libft 참조)
 
 ifdef SANITIZE
 	CFLAGS += -fsanitize=address
