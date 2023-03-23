@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 23:10:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/22 23:21:52 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/03/23 16:53:52 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 t_fork	*create_forkmutexs(void)
 {
-    int     result;
+	int		result;
 	t_fork	*new;
 
-    result = 0;
-    new = NULL;
+	result = 0;
+	new = NULL;
 	new = (t_fork *)malloc(sizeof(t_fork));
 	if (!new)
 	{
@@ -29,7 +29,7 @@ t_fork	*create_forkmutexs(void)
 	if (result == -1)
 	{
 		printf("Mutex Init Error\n");
-        free(new);
+		free(new);
 		return (new);
 	}
 	new->used = 0;

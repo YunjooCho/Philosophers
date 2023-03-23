@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:30:04 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/22 23:16:16 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/03/23 16:52:20 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	init_table(int idx, int result, t_table *table)
 		table->time_to_die = result;
 	else if (idx == 3)
 		table->eating_time = result;
-	else if (idx == 4)	
+	else if (idx == 4)
 		table->sleeping_time = result;
 	else if (idx == 5)
 		table->must_eat_cnt = result;
@@ -33,7 +33,7 @@ int	init_arrays(t_table *table, t_philo **philos, t_fork **forks)
 	int	idx;
 
 	idx = 0;
-	while(idx < table->philo_cnt)
+	while (idx < table->philo_cnt)
 	{
 		philos[idx] = create_philothreads(idx);
 		forks[idx] = create_forkmutexs();

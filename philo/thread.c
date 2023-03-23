@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:09:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/22 23:15:52 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/03/23 17:21:00 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_philo	*create_philothreads(int idx)
 	int			result;
 	pthread_t	thread;
 	t_philo		*new;
-	
+
 	new = NULL;
 	new = (t_philo *)malloc(sizeof(t_philo));
 	if (!new)

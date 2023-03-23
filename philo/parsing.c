@@ -6,13 +6,13 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:25:19 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/21 15:25:05 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/23 18:14:44 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	parsing_arg(char **av, t_table *table)
+int	parsing_arg(char **av, t_table *table)
 {
 	int	idx;
 	int	result;
@@ -22,14 +22,11 @@ void	parsing_arg(char **av, t_table *table)
 	{
 		result = ph_atoi(av[idx]);
 		if (result == -1)
-		{
-			printf("Error\n");
-			return ;
-		}
+			return(result);
 		init_table(idx, result, table);
 		idx++;
 	}
-	print_table(table);
+	return (0);
 }
 
 int	is_digit(int c)
@@ -39,14 +36,20 @@ int	is_digit(int c)
 	return (0);
 }
 
-int	is_plus_minus(char *str, int i)
+int	is_plus_minus(char *str, int idx)
 {
-	int	idx;
-
-	idx = i;
 	if (!is_digit(str[idx + 1]))
 		return (0);
 	return (1);
+}
+
+int	check_operators(char *str, int idx)
+{
+	if (str[idx] == '-')
+		return (-1);
+	else if (str[idx] == '+' && !is_plus_minus(str, idx))
+		return (-1);
+	return (0);
 }
 
 int	ph_atoi(char *str)
@@ -58,29 +61,20 @@ int	ph_atoi(char *str)
 	i = 0;
 	n = 1;
 	result = 0;
-	
-	if (str[i] == '-')
-		return (-1);
-	if (str[i] == '+')
+	if (str[i] == '+' || str[i] == '-')
 	{
-		if (!is_plus_minus(str, i))
-			return (-1);
-		else
+		if (!check_operators(str, i))
 			i++;
+		else
+			return (-1);
 	}
 	while (str[i])
 	{
 		if (!is_digit(str[i]))
-		{
-			printf("Error\n");
 			return (-1);
-		}
 		result = result * 10 + (str[i] - '0') * n;
 		if (result < INT_MIN || result > INT_MAX)
-		{
-			printf("Error\n");
 			return (-1);
-		}
 		i++;
 	}
 	return ((int)result);

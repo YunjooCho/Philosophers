@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 20:55:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/22 23:29:51 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/03/23 18:06:38 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,25 +52,27 @@ typedef struct s_fork
 }	t_fork;
 
 
-void	parsing_arg(char **av, t_table *table);
+int		parsing_arg(char **av, t_table *table);
 int		is_digit(int c);
-int		is_plus_minus(char *str, int i);
+int		is_plus_minus(char *str, int idx);
+int		check_operators(char *str, int idx);
 int		ph_atoi(char *str);
-
-t_philo	**malloc_philosarr(int philo_cnt);
-t_fork	**malloc_forksarr(int philo_cnt);
 
 void	init_table(int idx, int result, t_table *table);
 int		init_arrays(t_table *table, t_philo **philos, t_fork **forks);
 void	init_philo(t_philo *new, int idx);
-int		init_forks(t_fork *fork);
+
+t_philo	**malloc_philosarr(int philos_cnt);
+t_fork	**malloc_forksarr(int forks_cnt);
 
 t_philo	*create_philothreads(int idx);
 void	*tmp_print(void *idx);
 
 t_fork	*create_forkmutexs(void);
 
+int		print_error(char *str);
 void	print_table(t_table *table);
 void	print_philos(int cnt, t_philo **philos);
+void	print_forks(int cnt, t_fork **forks);
 
 #endif
