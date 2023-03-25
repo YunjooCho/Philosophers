@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 23:10:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/23 16:53:52 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/25 17:00:38 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,3 @@ t_fork	*create_forkmutexs(void)
 	new->used = 0;
 	return (new);
 }
-
-// void	ft_usleep(int time)
-// {
-// }

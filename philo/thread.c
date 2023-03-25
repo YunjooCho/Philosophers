@@ -6,59 +6,115 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:09:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/23 22:33:39 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/25 23:24:50 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo	*create_philothreads(int thread_cnt, int idx)
+int	create_philothreads(t_table *table, t_philo **philos, t_fork **forks)
 {
-	int			result;
-	long		idx_back;
-	pthread_t	thread[thread_cnt];
-	t_philo		*new;
-
-	idx_back = idx;
-	new = NULL;
-	new = (t_philo *)malloc(sizeof(t_philo));
-	if (!new)
+	long			idx;
+	int				result;
+	pthread_mutex_t mutex;
+	
+	(void)forks;
+	idx = 0;
+	result = pthread_mutex_init(&mutex, NULL);
+	if (result == -1)
 	{
-		printf("Fork Malloc Fail\n");
-		return (new);
+		printf("Mutex Init Error\n");
+		return (result);
 	}
-	init_philo(new, idx_back);
-	result = pthread_create(&thread[idx_back], NULL, task, (void *)idx_back);
-	if (result < 0)
+	result = 0;
+	while (idx < table->philo_cnt)
 	{
-		free(new);
-		return (new);
+		result = pthread_create(&philos[idx]->thread, NULL, task, (void *)idx);
+		// table->cur_idx = idx;
+		// result = pthread_create(&philos[idx]->thread, NULL, philo_task, (void *)table);
+		if (result < 0)
+			return (-1);
+		idx++;
 	}
-	new->thread = &thread[idx_back];
-	return (new);
+	return (0);
 }
 
 void	*task(void *idx_back)
 {
 	struct timeval	cur_time;
-	long			i;
+	long			philo_id;
 	
-	i = (long)idx_back;
+	philo_id = (long)idx_back;
 	if (gettimeofday(&cur_time, NULL) == -1)
 	{
 		printf("gettimeofday() Fail\n");
-		return ;
+		return (NULL);
 	}
-	printf("[%d] %ld has taken a fork\n", cur_time.tv_usec, i+1);
-	printf("[%d] %ld is eating\n", cur_time.tv_usec, i+1);
-	printf("[%d] %ld is sleeping\n", cur_time.tv_usec, i+1);
-	printf("[%d] %ld is thinking\n", cur_time.tv_usec, i+1);
-	printf("[%d] %ld died\n", cur_time.tv_usec, i+1);
-	// pthread_exit(0);
+	printf("[%d] %ld has taken a fork\n", cur_time.tv_usec, philo_id + 1);
+	printf("[%d] %ld is eating\n", cur_time.tv_usec, philo_id + 1);
+	printf("[%d] %ld is sleeping\n", cur_time.tv_usec, philo_id + 1);
+	printf("[%d] %ld is thinking\n", cur_time.tv_usec, philo_id + 1);
+	printf("[%d] %ld died\n", cur_time.tv_usec, philo_id + 1);
+	usleep(10);
+	pthread_exit(0);
 	return (NULL);
 }
 
-void	get_milSec(struct timeval cur_time)
+void	*philo_task(void *info)
 {
+	t_table			*table;
+	struct timeval	cur_time;
 	
+	
+	table = NULL;
+	table = (t_table *)info;
+	if (gettimeofday(&cur_time, NULL) == -1)
+	{
+		printf("gettimeofday() Fail\n");
+		return (NULL);
+	}
+	pickup_forks(table);
+	printf("[%d] %ld has taken a fork\n", cur_time.tv_usec, table->cur_idx + 1);
+	printf("[%d] %ld is eating\n", cur_time.tv_usec, table->cur_idx + 1);
+	printf("[%d] %ld is sleeping\n", cur_time.tv_usec, table->cur_idx + 1);
+	printf("[%d] %ld is thinking\n", cur_time.tv_usec, table->cur_idx + 1);
+	printf("[%d] %ld died\n", cur_time.tv_usec, table->cur_idx + 1);
+	usleep(10);
+	pthread_exit(0);
+	// eating();
+	// putdown_forks();
+	// sleeping();
+	// tinkking();
+	return (NULL);
 }
+
+void	pickup_forks(t_table *table)
+{
+	(void)table;
+	printf("-------------- test print -----------------\n");
+}
+
+// void	ft_usleep(int time)
+// {
+// }
+
+// void	get_milSec(long millisec)
+// {
+// 	int	result;
+// 	int	seconds;
+// 	int	minutes;
+// 	int	hours;
+// 	int	day;
+// 	int	month;
+// 	int year;
+
+// 	result = 0;
+// 	seconds = 0;
+// 	minutes = 0;
+// 	hours = 0;
+// 	day = 0;
+// 	month = 0;
+// 	year = 0;
+
+// 	result = millisec % 1000;
+// }

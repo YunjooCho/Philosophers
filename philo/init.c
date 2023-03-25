@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:30:04 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/23 21:11:10 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/25 23:18:36 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,30 +26,27 @@ void	init_table(int idx, int result, t_table *table)
 		table->sleeping_time = result;
 	else if (idx == 5)
 		table->must_eat_cnt = result;
+	table->philos = NULL;
+	table->forks = NULL;
+	table->cur_idx = -1;
 }
 
-int	init_arrays(t_table *table, t_philo **philos, t_fork **forks)
+t_philo	*init_philo(int idx)
 {
-	int	idx; 
+	t_philo *new;
 
-	idx = 0;
-	while (idx < table->philo_cnt)
+	new = NULL;
+	new = (t_philo *)malloc(sizeof(t_philo));
+	if (!new)
 	{
-		philos[idx] = create_philothreads(table->philo_cnt, idx);
-		forks[idx] = create_forkmutexs();
-		if (!philos[idx] || !forks[idx])
-			return (-1);
-		idx++;
+		printf("Philo Malloc Fail\n");
+		return (new);
 	}
-	return (0);
-}
-
-void	init_philo(t_philo *new, int idx)
-{
 	new->philo_id = idx + 1;
-	new->status = -1;
+	new->status = NOTHING;
 	new->eat_cnt = 0;
 	new->left_fork = NULL;
 	new->right_fork = NULL;
 	new->thread = NULL;
+	return (new);
 }
