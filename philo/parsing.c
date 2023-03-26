@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:25:19 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/23 18:14:44 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/26 16:01:46 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@ int	parsing_arg(char **av, t_table *table)
 	while (av[idx])
 	{
 		result = ph_atoi(av[idx]);
-		if (result == -1)
-			return(result);
-		init_table(idx, result, table);
+		if (result < 0 || init_table(idx, result, table) < 0)
+			return (result);
 		idx++;
 	}
 	return (0);

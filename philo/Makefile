@@ -6,14 +6,14 @@
 #    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/03/23 20:56:48 by yunjcho          ###   ########.fr        #
+#    Updated: 2023/03/26 21:25:24 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-SRCS = main.c parsing.c init.c array.c thread.c mutex.c print.c
+SRCS = main.c parsing.c init.c array.c thread.c mutex.c timer.c print.c
 OBJS = $(SRCS:.c=.o)
 DBJS = $(SRCS:.c=.d)
 # -lpthread (Libft 참조)
