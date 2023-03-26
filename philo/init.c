@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:30:04 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/26 21:37:27 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/26 21:53:01 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	init_table(int idx, int result, t_table *table)
 		table->is_dying = 0;
 		table->philos = NULL;
 		table->forks = NULL;
-		// table->cur_idx = -1;
 		if (pthread_mutex_init(&table->mutex, NULL) < -1)
 			return (print_error("Mutex Init Error"));
 		table->philo_cnt = result;

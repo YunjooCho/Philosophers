@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:09:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/26 21:41:37 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/26 22:00:42 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ void	*philo_task(void *arg)
 	philo = (t_philo *)arg;
 	philo->lasteating_time = get_now();
 	if (!pickup_forks(philo))
-		printf("Eating\n");
-		// eating(philo);
+		eating(philo);
 	// putdown_forks();
 	// sleeping();
 	// tinkking();
@@ -86,7 +85,8 @@ int	pickup_forks(t_philo *philo)
 
 int	check_forks(t_philo *philo)
 {
-	t_fork	*forks;
+	long long	cur_time;
+	t_fork		*forks;
 
 	forks = philo->table->forks;
 	if (!pthread_mutex_lock(&forks[philo->left_fork].fork_lock) \
@@ -94,7 +94,8 @@ int	check_forks(t_philo *philo)
 	{
 		philo->status = EATING;
 		philo->eat_cnt++;
-		printf("%lld ms %d has taken a fork\n", get_now(), philo->philo_id);
+		cur_time = get_diffMilliSec(philo->lasteating_time);
+		printf("%lld ms %d has taken a fork\n", cur_time, philo->philo_id);
 	}
 	else
 	{
@@ -106,73 +107,12 @@ int	check_forks(t_philo *philo)
 	return (0);
 }
 
-// int	pickup_forks(t_table *table)
-// {
-// 	int		result;
-// 	long	philo_idx;
-// 	t_philo	*philo;
-
-// 	philo_idx = table->cur_idx;
-// 	philo = table->philos[philo_idx];
-// 	result = pthread_mutex_lock(&table->mutex);
-// 	if (result < 0)
-// 	{
-// 		printf("Mutex Lock Error : %d\n", result);
-// 		return (-1);
-// 	}
-// 	if (philo->status == THINKING)
-// 		check_forks(table);
-// 	else if (philo->status == SLEEPING)
-// 		printf("Philosopher %ld is sleeping\n", philo_idx);
-// 	else if (philo->status == EATING)
-// 	{
-// 		printf("Philosopher %ld is eating\n", philo_idx);
-// 	}
-// 	else if (philo->status == DYING)
-// 		printf("Philosopher %ld died\n", philo_idx);
-// 	result = pthread_mutex_unlock(&table->mutex);
-// 	if (result < 0)
-// 	{
-// 		printf("Mutex Unlock Error : %d\n", result);
-// 		return (-1);
-// 	}
-// 	return (0);
-// }
-
-// int	check_forks(t_table *table)
-// {
-// 	long	philo_idx;
-// 	t_philo	*philo;
-// 	t_fork	**forks;
-
-// 	philo_idx = table->cur_idx;
-// 	philo = table->philos[philo_idx];
-// 	forks = table->forks;
-// 	if (!pthread_mutex_lock(&forks[philo->left_fork]->fork_lock) \
-// 	&& !pthread_mutex_lock(&forks[philo->right_fork]->fork_lock))
-// 	{
-// 		philo->status = EATING;
-// 		philo->eat_cnt++;
-// 		printf("%0.0f ms %ld has taken a fork\n", print_diffMilliSec(table->cur_time), philo_idx);
-// 		if (gettimeofday(&table->cur_time, NULL) == -1)
-// 			return (print_error("gettimeofday() Fail"));
-// 	}
-// 	else
-// 	{
-// 		printf("Philosopher %ld can't Eating : %d\n", philo_idx, philo->status);
-// 		pthread_mutex_unlock(&forks[philo->left_fork]->fork_lock);
-// 		pthread_mutex_unlock(&forks[philo->right_fork]->fork_lock);
-// 		return (-1);
-// 	}
-// 	return (0);
-// }
-
-// // void eating(t_table *table)
-// // {
-// // 	double	diffTime;
-
-// // 	diffTime = 0;
-// // 	while (diffTime < table->eating_time)
-// // 		diffTime = print_diffMilliSec(table->philos[table->cur_idx]->lasteating_time);
-// // 	printf("%0.0f ms %ld is eating\n", diffTime, table->cur_idx);
-// // }
+void eating(t_philo *philo)
+{
+	while (get_diffMilliSec(philo->eat_cnt) <= philo->table->eating_time)
+	{
+		if (get_diffMilliSec(philo->eat_cnt) == philo->table->eating_time)
+			philo->lasteating_time = get_diffMilliSec(philo->eat_cnt);
+	}
+	// printf("%0.0f ms %ld is eating\n", diffTime, table->cur_idx);
+}

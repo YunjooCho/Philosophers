@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 20:55:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/26 21:36:51 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/26 22:01:33 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,21 +77,19 @@ t_fork	*malloc_forksarr(int forks_cnt);
 int		create_forkmutexs(t_fork *fork);
 
 int		create_philothreads(t_table *table);
-// void	*philo_task(void *info);
-// int		pickup_forks(t_table *table);
-// int		check_forks(t_table *table);
-// void 	eating(t_table *table);
 void	*philo_task(void *arg);
 int		pickup_forks(t_philo *philo);
 int		check_forks(t_philo *philo);
+void 	eating(t_philo *philo);
 
 long long	get_now(void);
+long long	get_diffMilliSec(long long start_time);
 // int		is_dying(t_table *table);
 
 int		print_error(char *str);
 void	print_table(t_table *table);
 void	print_philos(int cnt, t_philo *philos);
 void	print_forks(int cnt, t_fork *forks);
-double	print_diffMilliSec(struct timeval start_time);
+
 
 #endif

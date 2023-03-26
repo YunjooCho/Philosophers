@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 19:06:40 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/26 21:41:41 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/26 22:01:27 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,20 @@ long long	get_now(void)
 	return (now_time);
 }
 
+long long	get_diffMilliSec(long long start_time)
+{
+	long long 	end_time;
+	long long	diffTime;
+
+	end_time = get_now();
+	diffTime = start_time - end_time;
+	return (diffTime);
+}
+
 // // void	ft_usleep(int time)
 // // {
 // // }
 
-// double print_diffMilliSec(t_table *table)
-// {
-// 	struct timeval start_time;
-// 	struct timeval end_time;
-// 	double	diffTime;
-
-// 	diffTime = ((end_time.tv_sec - start_time.tv_sec) * 1000)
-// 	+ (((end_time.tv_usec - start_time.tv_sec) / 1000))
-// 	return (diffTime);
-// }
 
 // int	is_dying(t_table *table)
 // {
