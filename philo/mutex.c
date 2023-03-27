@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 23:10:26 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/26 20:47:54 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/27 16:46:23 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ int	create_forkmutexs(t_fork *fork)
 		printf("Mutex Init Error\n");
 		return (result);
 	}
-	fork->used = 0;
+	fork->used = NOT_USED;
 	return (result);
 }

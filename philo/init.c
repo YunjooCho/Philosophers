@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:30:04 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/26 21:53:01 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/27 16:09:26 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	init_philo(t_philo *philo, t_table *table, int idx)
 	philo->eat_cnt = 0;
 	philo->left_fork = idx;
 	philo->right_fork = (idx + (table->philo_cnt - 1)) % table->philo_cnt;
+	philo->lasteating_time = 0;
+	philo->lastworking_time = 0;
 	philo->table = table;
 	philo->thread = NULL;
 }

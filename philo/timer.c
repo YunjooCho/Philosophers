@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 19:06:40 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/26 22:01:27 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/27 17:47:12 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ long long	get_now(void)
 
 long long	get_diffMilliSec(long long start_time)
 {
-	long long 	end_time;
+	long long	end_time;
 	long long	diffTime;
 
 	end_time = get_now();
-	diffTime = start_time - end_time;
+	diffTime = end_time - start_time;
 	return (diffTime);
 }
 
