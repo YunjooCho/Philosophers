@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 20:55:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/27 21:02:10 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/27 21:30:46 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void		thinking(t_philo *philo, t_fork *forks);
 
 long long	get_now(void);
 long long	get_diffMilliSec(long long start_time);
-// int		is_dying(t_table *table);
+// int		is_dying(t_table *table); //TODO
 
 int			print_error(char *str);
 void		print_table(t_table *table);

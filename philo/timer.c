@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 19:06:40 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/27 17:47:12 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/27 21:31:23 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ long long	get_now(void)
 	long long		now_time;
 
 	now_time = 0;
-	gettimeofday(&now, NULL); // -1일 때 예외 처리?
+	gettimeofday(&now, NULL); // 반환값 -1 일 때 예외 처리?
 	now_time = (now.tv_sec * 1000) + (now.tv_usec / 1000);
 	return (now_time);
 }

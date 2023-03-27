@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:09:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/27 21:17:36 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/27 21:35:36 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,38 +15,35 @@
 int	create_philothreads(t_table *table)
 {
 	long	idx;
-	t_philo *philos;
+	t_philo	*philos;
 
 	idx = 0;
 	philos = table->philos;
 	while (idx < table->philo_cnt)
 	{
-		// table->cur_idx = idx;
-		if (pthread_create(&philos[idx].thread, NULL, philo_task, (void *)&philos[idx]) < 0)
+		if (pthread_create(&philos[idx].thread, NULL, \
+		philo_task, (void *)&philos[idx]) < 0)
 			return (print_error("Create Threads Fail"));
 		idx++;
 	}
-
 	//wait();
-	while (1)
-	{
-		int cnt;
-
-		cnt = 0;
-		if (!pthread_join(table->philos[idx].thread, NULL))
-		{
-			cnt++;
-			if (cnt == table->philo_cnt)
-				break ;
-		}
-	}
+	// while (1)
+	// {
+	// 	int cnt;
+	// 	cnt = 0;
+	// 	if (!pthread_join(table->philos[idx].thread, NULL))
+	// 	{
+	// 		cnt++;
+	// 		if (cnt == table->philo_cnt)
+	// 			break ;
+	// 	}
+	// }
 	return (0);
 }
 
 void	*philo_task(void *arg)
 {
 	//TODO - is_dying() 처리하기 (모니터 스레드? 함수?)
-
 	t_philo	*philo;
 	t_fork	*forks;
 
@@ -54,19 +51,18 @@ void	*philo_task(void *arg)
 	philo = (t_philo *)arg;
 	forks = philo->table->forks;
 	philo->lasteating_time = get_now();
+	philo->lastworking_time = get_now();
 	// printf("[philo_task] %d Last Eat time First Init : %lld\n", philo->philo_id, philo->lasteating_time);
+	// printf("[philo_task] %d Last Work time First Init : %lld\n", philo->philo_id, philo->lasteating_time);
 	usleep(3000);
 	if (!pickup_forks(philo, forks)) //글로벌 뮤텍스 잠금/해제 | 포크 뮤텍스 잠금/해제
 	{
 		eating(philo);
 		putdown_forks(philo, forks); // 포크 뮤텍스 잠금/해제
 	}
-	// pickup_forks(philo, forks);  //글로벌 뮤텍스 잠금/해제 | 포크 뮤텍스 잠금/해제
-	// eating(philo);
-	// putdown_forks(philo, forks); // 포크 뮤텍스 잠금/해제
 	sleeping(philo);
 	thinking(philo, forks);         //pickup_forks를 호출해야 함(수정 필요)
-	// usleep(7000);
+	usleep(7000);
 	pthread_exit(0);
 	return (NULL);
 }
@@ -84,7 +80,7 @@ int	pickup_forks(t_philo *philo, t_fork *forks)
 		if (check_forks(philo, forks) == -1)
 		{
 			pthread_mutex_unlock(&philo->table->mutex);
-			return(-1);
+			return (-1);
 		}
 	}
 	pthread_mutex_unlock(&philo->table->mutex);
@@ -119,7 +115,7 @@ int	check_forks(t_philo *philo, t_fork *forks)
 	philo->status = EATING;
 	philo->eat_cnt++;
 	philo->lastworking_time = get_now();
-	print_time = get_diffMilliSec(philo->lasteating_time); //태어나고나서 포크를 집은 시간
+	print_time = get_diffMilliSec(philo->lastworking_time); //태어나고나서 포크를 집은 시간
 	printf("%lld ms %d has taken a fork\n", print_time, philo->philo_id);
 	pthread_mutex_unlock(&philo->table->mutex);
 	return (0);
@@ -130,7 +126,6 @@ int	check_leftfork(t_philo *philo, t_fork *forks)
 	int	result;
 
 	result = 0;
-	// printf("[check_leftfork] philo_id : %d, left : %ld\n", philo->philo_id, philo->left_fork);
 	pthread_mutex_lock(&forks[philo->left_fork].fork_lock);
 	if (!forks[philo->left_fork].used)
 		forks[philo->left_fork].used = USED;
@@ -145,7 +140,6 @@ int	check_rightfork(t_philo *philo, t_fork *forks)
 	int result;
 
 	result = 0;
-	// printf("[check_leftfork] philo_id : %d, left : %ld\n", philo->philo_id, philo->right_fork);
 	pthread_mutex_lock(&forks[philo->right_fork].fork_lock);
 	if (!forks[philo->right_fork].used)
 		forks[philo->right_fork].used = USED;
@@ -256,12 +250,11 @@ void	thinking(t_philo *philo, t_fork *forks)
 		philo->status = THINKING;
 		while (1)
 		{
-			print_time = get_diffMilliSec(philo->lasteating_time);
-			if (print_time == philo->table->eating_time)
-				philo->lastworking_time = get_now();
-			printf("%lld ms %d is sleeping\n", print_time, philo->philo_id);
+			print_time = get_diffMilliSec(philo->lastworking_time);
+			printf("%lld ms %d is thinking\n", print_time, philo->philo_id);
 			if (!pickup_forks(philo, forks)) //글로벌 뮤텍스 잠금/해제 | 포크 뮤텍스 잠금/해제 (밖에 선언된 함수 호출할 수 없는 지?)
 			{
+				philo->lastworking_time = get_now();
 				break ;
 				// philo->lastworking_time = get_now();
 				// eating(philo);
