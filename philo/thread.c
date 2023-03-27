@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:09:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/27 21:35:36 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/27 21:53:43 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	create_philothreads(t_table *table)
 			return (print_error("Create Threads Fail"));
 		idx++;
 	}
-	//wait();
+	//TODO - wait();
 	// while (1)
 	// {
 	// 	int cnt;
@@ -115,9 +115,8 @@ int	check_forks(t_philo *philo, t_fork *forks)
 	philo->status = EATING;
 	philo->eat_cnt++;
 	philo->lastworking_time = get_now();
-	print_time = get_diffMilliSec(philo->lastworking_time); //태어나고나서 포크를 집은 시간
+	print_time = get_diffmillisec(philo->lastworking_time); //태어나고나서 포크를 집은 시간
 	printf("%lld ms %d has taken a fork\n", print_time, philo->philo_id);
-	pthread_mutex_unlock(&philo->table->mutex);
 	return (0);
 }
 
@@ -160,7 +159,7 @@ void eating(t_philo *philo)
 	{
 		while (print_time <= philo->table->eating_time)
 		{
-			print_time = get_diffMilliSec(philo->lastworking_time);
+			print_time = get_diffmillisec(philo->lastworking_time);
 			if (print_time == philo->table->eating_time)
 				philo->lasteating_time = get_now();
 		}
@@ -174,50 +173,70 @@ void	putdown_forks(t_philo *philo, t_fork *forks)
 {
 	if (philo->status == EATING)
 	{	
-		//TODO - 내려놓을 때도 홀수 / 짝수 순서 반대?
-		//왼쪽 포크
-		pthread_mutex_lock(&forks[philo->left_fork].fork_lock);
-		if (forks[philo->left_fork].used == USED)
-			forks[philo->left_fork].used = NOT_USED;
-		
-		printf("-------------------------[putdown_forks Left Complete] Debugging Start----------------------------\n");
-		printf("Philo %d putdown ", philo->philo_id);
-		char *left_str = "";
-		if (forks[philo->left_fork].used == USED)
-			left_str = "USED";
-		else if (forks[philo->left_fork].used == NOT_USED)
-			left_str = "NOT_USED";
-		printf("left fork : %ld - %s\n", philo->left_fork, left_str);
-		printf("-------------------------[putdown_forks Left Complete] Debugging End----------------------------\n");
-		
-		pthread_mutex_unlock(&forks[philo->left_fork].fork_lock);
-		
-
-
-		
-		//오른쪽 포크
-		pthread_mutex_unlock(&forks[philo->right_fork].fork_lock);
-		if (forks[philo->right_fork].used == USED)
-			forks[philo->right_fork].used = NOT_USED;
-		
-		printf("-------------------------[putdown_forks Right Complete] Debugging Start----------------------------\n");
-		printf("Philo %d putdown ", philo->philo_id);
-		char *right_str = "";
-		if (forks[philo->right_fork].used == USED)
-			right_str = "USED";
-		else if (forks[philo->right_fork].used == NOT_USED)
-			right_str = "NOT_USED";
-		printf("right fork : %ld - %s\n", philo->right_fork, right_str);
-		printf("-------------------------[putdown_forks Right Complete] Debugging End----------------------------\n");
-		
-		print_forks(philo->table->philo_cnt, forks);
-		pthread_mutex_unlock(&forks[philo->right_fork].fork_lock);
-		
-
+		//TODO - 내려놓을 때도 홀수 / 짝수 순서 반대? (데드락)
+		if (philo->philo_id % 2 != 0)
+		{
+			putdown_leftfork(philo, forks);
+			putdown_rightfork(philo, forks);
+		}
+		else
+		{
+			usleep(3000);
+			putdown_rightfork(philo, forks);
+			putdown_leftfork(philo, forks);
+		}
 		printf("[putdown_forks] Philo %d Status : %d\n", philo->philo_id, philo->status);
 		//TODO - 다른 스레드 께우기 추가
-		
 	}
+}
+
+int	putdown_leftfork(t_philo *philo, t_fork *forks)
+{
+	int	result;
+
+	result = 0;
+	pthread_mutex_lock(&forks[philo->left_fork].fork_lock);
+	if (forks[philo->left_fork].used == USED)
+		forks[philo->left_fork].used = NOT_USED;
+	else
+		result = -1;
+
+	printf("-------------------------[putdown_forks Left Complete] Debugging Start----------------------------\n");
+	printf("Philo %d putdown ", philo->philo_id);
+	char *left_str = "";
+	if (forks[philo->left_fork].used == USED)
+		left_str = "USED";
+	else if (forks[philo->left_fork].used == NOT_USED)
+		left_str = "NOT_USED";
+	printf("left fork : %ld - %s\n", philo->left_fork, left_str);
+	printf("-------------------------[putdown_forks Left Complete] Debugging End----------------------------\n");
+	
+	pthread_mutex_unlock(&forks[philo->left_fork].fork_lock);
+	return (result);
+}
+
+int	putdown_rightfork(t_philo *philo, t_fork *forks)
+{
+	int	result;
+
+	result = 0;
+	pthread_mutex_unlock(&forks[philo->right_fork].fork_lock);
+	if (forks[philo->right_fork].used == USED)
+		forks[philo->right_fork].used = NOT_USED;
+	
+	printf("-------------------------[putdown_forks Right Complete] Debugging Start----------------------------\n");
+	printf("Philo %d putdown ", philo->philo_id);
+	char *right_str = "";
+	if (forks[philo->right_fork].used == USED)
+		right_str = "USED";
+	else if (forks[philo->right_fork].used == NOT_USED)
+		right_str = "NOT_USED";
+	printf("right fork : %ld - %s\n", philo->right_fork, right_str);
+	printf("-------------------------[putdown_forks Right Complete] Debugging End----------------------------\n");
+	
+	print_forks(philo->table->philo_cnt, forks);
+	pthread_mutex_unlock(&forks[philo->right_fork].fork_lock);
+	return (result);
 }
 
 void	sleeping(t_philo *philo)
@@ -230,7 +249,7 @@ void	sleeping(t_philo *philo)
 		philo->status = SLEEPING;
 		while (print_time <= philo->table->sleeping_time)
 		{
-			print_time = get_diffMilliSec(philo->lasteating_time);
+			print_time = get_diffmillisec(philo->lasteating_time);
 			if (print_time == philo->table->eating_time)
 				philo->lastworking_time = get_now();
 		}
@@ -250,9 +269,9 @@ void	thinking(t_philo *philo, t_fork *forks)
 		philo->status = THINKING;
 		while (1)
 		{
-			print_time = get_diffMilliSec(philo->lastworking_time);
+			print_time = get_diffmillisec(philo->lastworking_time);
 			printf("%lld ms %d is thinking\n", print_time, philo->philo_id);
-			if (!pickup_forks(philo, forks)) //글로벌 뮤텍스 잠금/해제 | 포크 뮤텍스 잠금/해제 (밖에 선언된 함수 호출할 수 없는 지?)
+			if (!pickup_forks(philo, forks)) //밖에 선언된 함수 호출할 수 없는 지?
 			{
 				philo->lastworking_time = get_now();
 				break ;
