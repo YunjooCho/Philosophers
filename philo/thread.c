@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:09:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/27 21:53:43 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/28 18:09:42 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,29 @@ int	create_philothreads(t_table *table)
 			return (print_error("Create Threads Fail"));
 		idx++;
 	}
-	//TODO - wait();
-	// while (1)
-	// {
-	// 	int cnt;
-	// 	cnt = 0;
-	// 	if (!pthread_join(table->philos[idx].thread, NULL))
-	// 	{
-	// 		cnt++;
-	// 		if (cnt == table->philo_cnt)
-	// 			break ;
-	// 	}
-	// }
+	//TODO - wait()? 수정 필요
+	while (1)
+	{
+		// int idx;
+		// int cnt;
+		// int status;
+		
+		// idx = 0;
+		// cnt = 0;
+		// status = 0;
+		// if (!pthread_join(table->philos[idx].thread, (void **)&status))
+		// {
+		// 	printf("Thread End %d\n", status);
+		// 	if (cnt == table->philo_cnt)
+		// 		break ;
+		// 	cnt++;
+		// 	idx++;
+		// }
+		// if (idx == table->philo_cnt)
+		// 	idx = 0;
+		// else
+		// 	idx++;
+	}
 	return (0);
 }
 
@@ -54,16 +65,18 @@ void	*philo_task(void *arg)
 	philo->lastworking_time = get_now();
 	// printf("[philo_task] %d Last Eat time First Init : %lld\n", philo->philo_id, philo->lasteating_time);
 	// printf("[philo_task] %d Last Work time First Init : %lld\n", philo->philo_id, philo->lasteating_time);
-	usleep(3000);
-	if (!pickup_forks(philo, forks)) //글로벌 뮤텍스 잠금/해제 | 포크 뮤텍스 잠금/해제
+	usleep(3000); //TODO - 포크 집는 시간 확인용(불필요시 삭제)
+	while (1)
 	{
+		while (!pickup_forks(philo, forks)) //글로벌 뮤텍스 잠금/해제 | 포크 뮤텍스 잠금/해제
+		{
+		}
 		eating(philo);
 		putdown_forks(philo, forks); // 포크 뮤텍스 잠금/해제
+		sleeping(philo);
+		thinking(philo, forks); //pickup_forks를 호출해야 함(수정 필요)
 	}
-	sleeping(philo);
-	thinking(philo, forks);         //pickup_forks를 호출해야 함(수정 필요)
 	usleep(7000);
-	pthread_exit(0);
 	return (NULL);
 }
 
@@ -115,7 +128,7 @@ int	check_forks(t_philo *philo, t_fork *forks)
 	philo->status = EATING;
 	philo->eat_cnt++;
 	philo->lastworking_time = get_now();
-	print_time = get_diffmillisec(philo->lastworking_time); //태어나고나서 포크를 집은 시간
+	print_time = get_diffmillisec(philo->lastworking_time); //스레드 생성 ~ 포크 집은 시간
 	printf("%lld ms %d has taken a fork\n", print_time, philo->philo_id);
 	return (0);
 }
@@ -159,7 +172,7 @@ void eating(t_philo *philo)
 	{
 		while (print_time <= philo->table->eating_time)
 		{
-			print_time = get_diffmillisec(philo->lastworking_time);
+			print_time = get_diffmillisec(philo->lastworking_time); //포크를 집음 ~ 식사 종료 : (식사 시간)
 			if (print_time == philo->table->eating_time)
 				philo->lasteating_time = get_now();
 		}
@@ -186,7 +199,7 @@ void	putdown_forks(t_philo *philo, t_fork *forks)
 			putdown_leftfork(philo, forks);
 		}
 		printf("[putdown_forks] Philo %d Status : %d\n", philo->philo_id, philo->status);
-		//TODO - 다른 스레드 께우기 추가
+		//TODO - 다른 스레드 ㄲㅐ우기 추가
 	}
 }
 
@@ -210,7 +223,8 @@ int	putdown_leftfork(t_philo *philo, t_fork *forks)
 		left_str = "NOT_USED";
 	printf("left fork : %ld - %s\n", philo->left_fork, left_str);
 	printf("-------------------------[putdown_forks Left Complete] Debugging End----------------------------\n");
-	
+	// print_forks(philo->table->philo_cnt, forks);
+
 	pthread_mutex_unlock(&forks[philo->left_fork].fork_lock);
 	return (result);
 }
@@ -233,8 +247,8 @@ int	putdown_rightfork(t_philo *philo, t_fork *forks)
 		right_str = "NOT_USED";
 	printf("right fork : %ld - %s\n", philo->right_fork, right_str);
 	printf("-------------------------[putdown_forks Right Complete] Debugging End----------------------------\n");
+	// print_forks(philo->table->philo_cnt, forks);
 	
-	print_forks(philo->table->philo_cnt, forks);
 	pthread_mutex_unlock(&forks[philo->right_fork].fork_lock);
 	return (result);
 }
@@ -249,7 +263,7 @@ void	sleeping(t_philo *philo)
 		philo->status = SLEEPING;
 		while (print_time <= philo->table->sleeping_time)
 		{
-			print_time = get_diffmillisec(philo->lasteating_time);
+			print_time = get_diffmillisec(philo->lasteating_time); //식사 종료 ~ 잠 종료(깨어난 시간)
 			if (print_time == philo->table->eating_time)
 				philo->lastworking_time = get_now();
 		}

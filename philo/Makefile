@@ -6,17 +6,16 @@
 #    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/03/26 21:25:24 by yunjcho          ###   ########.fr        #
+#    Updated: 2023/03/28 18:55:40 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g3
 SRCS = main.c parsing.c init.c array.c thread.c mutex.c timer.c print.c
 OBJS = $(SRCS:.c=.o)
 DBJS = $(SRCS:.c=.d)
-# -lpthread (Libft 참조)
 
 ifdef SANITIZE
 	CFLAGS += -fsanitize=address
@@ -28,7 +27,7 @@ all : $(NAME)
 	$(CC) $(CFLAGS) -c $< -o $@
 	
 $(NAME) : $(OBJS)
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@ 
 
 clean :
 	rm -rf $(OBJS)

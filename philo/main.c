@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:11:25 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/27 19:14:36 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/28 17:36:08 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@ int	main(int ac, char **av)
 		// system("leaks philo");
 		return (-1);
 	}
-	system("leaks philo");
+	//system("leaks philo");
 	return (0);
 }
