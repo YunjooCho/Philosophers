@@ -1,25 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*    thread_new.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/28 21:07:27 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/28 21:45:00 by yunjcho          ###   ########.fr       */
+/*   Created: 2023/03/28 20:58:51 by yunjcho           #+#    #+#             */
+/*   Updated: 2023/03/28 21:01:38 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int ac, char **av)
-{
-	t_table table;
 
-	if (ac <= 4 || ac >= 7)
-		return (print_error("Incorrect number of parameters"));
-	if (init_table(av, &table) == -1)
-		return (print_error("Parsing Fail"));
-	if (create_threads(table) == -1)
-		return (print_error("Create Thread Fail"));
+void	*philo_task(void *arg)//TODO - is_dying() 처리하기 (모니터 스레드? 함수?)
+{
+	t_philo	*philo;
+	t_fork	*forks;
+
+	philo = NULL;
+	philo = (t_philo *)arg;
+	forks = philo->table->forks;
+	while(1)
+	{
+		eating(philo);
+		sleeping();
+		thinking();
+	}
+	return (NULL);
 }
+
+void	eating()
+
+
+

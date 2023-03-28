@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   array.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/28 21:22:55 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/28 21:42:34 by yunjcho          ###   ########.fr       */
+/*   Created: 2023/03/21 17:46:47 by yunjcho           #+#    #+#             */
+/*   Updated: 2023/03/28 21:40:06 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	init_philo(t_philo *philo, t_table *table, int idx)
-{
-	int	right_idx;
-
-	right_idx = (idx + (table->philo_cnt - 1)) % table->philo_cnt;
-	philo->philo_id = idx + 1;
-	philo->eat_cnt = 0;
-	philo->left_fork = &table->forks[idx];
-	philo->right_fork = &table->forks[right_idx];
-	philo->table = table;
-}
 
 t_philo	*malloc_philosarr(t_table *table)
 {
@@ -62,26 +50,4 @@ t_fork	*malloc_forksarr(int forks_cnt)
 		idx++;
 	}
 	return (forks_arr);
-}
-
-int	init_table(char **av, t_table *table)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < sizeof(t_table))
-		*((char *)table + i++) = 0;
-	table->philo_cnt = ph_atoi(av[1]);
-	table->time_to_die = ph_atoi(av[2]);
-	table->time_to_eat = ph_atoi(av[3]);
-	table->time_to_sleep = ph_atoi(av[4]);
-	if (av[5])
-		table->must_eat_cnt = ph_atoi(av[5]);
-	if (table->time_to_die < 0 || table->time_to_eat < 0 || \
-		table->time_to_sleep < 0 || table->must_eat_cnt < 0 || \
-		table->philo_cnt < 0)
-		return (-1);
-	table->forks = malloc_forksarr(table->philo_cnt);
-	table->philos = malloc_philosarr(table);
-	return (0);
 }
