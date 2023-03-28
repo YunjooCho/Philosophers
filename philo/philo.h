@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 20:55:58 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/27 21:56:00 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/28 19:38:05 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void		putdown_forks(t_philo *philo, t_fork *forks);
 int			putdown_leftfork(t_philo *philo, t_fork *forks);
 int			putdown_rightfork(t_philo *philo, t_fork *forks);
 void		sleeping(t_philo *philo);
-void		thinking(t_philo *philo, t_fork *forks);
+void		thinking(t_philo *philo);
 
 long long	get_now(void);
 long long	get_diffmillisec(long long start_time);
