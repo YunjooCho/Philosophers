@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:22:55 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/29 17:33:09 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/29 17:51:25 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	create_forkmutexs(t_fork *fork)
 		return (result);
 	}
 	fork->used = NOT_USED;
+	fork->last_author = -1;
 	return (result);
 }
 

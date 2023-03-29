@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:48 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/29 17:11:11 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/29 17:57:28 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_fork
 {
 	pthread_mutex_t	fork_mutex;
 	int				used;
+	int				last_author;
 }	t_fork;
 
 typedef struct s_philo
@@ -72,6 +73,8 @@ unsigned long	get_printms(unsigned long start_time);
 int				create_threads(t_table *table);
 void			*philo_task(void *argument);
 int				pickup_forks(t_philo *philo);
+int				check_leftfork(t_philo *philo);
+int				check_rightfork(t_philo *philo);
 void			eating(t_philo *philo);
 void			putdown_forks(t_philo *philo);
 void			sleeping(t_philo *philo);
