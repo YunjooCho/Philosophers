@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/29 18:05:06 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/29 18:54:12 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,21 @@ int	create_threads(t_table *table)
 	}
 	while(1)
 	{
+		//while(philo_cnt)
+			//int cnt;
+			//필로구조체 순회하면서 현재 시간 - 최근 먹은시간 > 안먹으면 죽는시간
+			// if (현재 시간 - 최근 먹은시간 > 안먹으면 죽는시간 == true)
+					//table.isdying = true;
+			//if(현재 필로 eat_cnt == must_eat)
+				//ent++	
+		// if (cnt == 필로 인원수)
+				//table.isdying = true;
 	}
+	/*while (필로수)
+	{
+		wait_pid wait
+		pthread_join();
+	}*/
 	return (0);
 }
 
@@ -126,7 +140,7 @@ void	eating(t_philo *philo)
 	while (1)
 	{
 		eating_time = get_printms(eatstart_time);
-		if (eating_time == (unsigned long)philo->table->time_to_eat)
+		if (eating_time >= (unsigned long)philo->table->time_to_eat)
 		{
 			//TODO - Debugging
 			unsigned long	eatend_time = 0;
@@ -139,6 +153,7 @@ void	eating(t_philo *philo)
 			philo->eat_cnt++;
 			break ;
 		}
+		usleep(400);
 	}
 }
 
@@ -174,8 +189,9 @@ void	sleeping(t_philo *philo)
 	pthread_mutex_unlock(&philo->table->print_mutex);
 	while (1)
 	{
+		usleep(400);
 		sleeping_time = get_printms(sleepstart_time);
-		if (sleeping_time == (unsigned long)philo->table->time_to_sleep)
+		if (sleeping_time >= (unsigned long)philo->table->time_to_sleep)
 		{
 			
 			//TODO - Debugging
