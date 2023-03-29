@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:22:55 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/28 21:42:34 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/29 17:33:09 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,20 @@ t_philo	*malloc_philosarr(t_table *table)
 		idx++;
 	}
 	return (philos_arr);
+}
+
+int	create_forkmutexs(t_fork *fork)
+{
+	int	result;
+
+	result = pthread_mutex_init(&fork->fork_mutex, NULL);
+	if (result == -1)
+	{
+		printf("Mutex Init Error\n");
+		return (result);
+	}
+	fork->used = NOT_USED;
+	return (result);
 }
 
 t_fork	*malloc_forksarr(int forks_cnt)
