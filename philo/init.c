@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:22:55 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/29 17:51:25 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/29 21:08:14 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	create_forkmutexs(t_fork *fork)
 		return (result);
 	}
 	fork->used = NOT_USED;
-	fork->last_author = -1;
 	return (result);
 }
 
@@ -90,6 +89,7 @@ int	init_table(char **av, t_table *table)
 	table->time_to_die = ph_atoi(av[2]);
 	table->time_to_eat = ph_atoi(av[3]);
 	table->time_to_sleep = ph_atoi(av[4]);
+	table->is_dying = NOT_DIED;
 	if (av[5])
 		table->must_eat_cnt = ph_atoi(av[5]);
 	if (table->time_to_die < 0 || table->time_to_eat < 0 || \

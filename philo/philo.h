@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:48 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/29 17:57:28 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/29 21:09:09 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 # define USED 1
 # define NOT_USED 0
 
+# define DIED 1
+# define NOT_DIED 0
+
 typedef struct s_table
 {
 	int				philo_cnt;
@@ -35,6 +38,7 @@ typedef struct s_table
 	struct s_fork	*forks;
 	pthread_mutex_t	check_mutex;
 	pthread_mutex_t	print_mutex;
+	// pthread_mutex_t	dying_mutex;
 	int				is_dying;
 }	t_table;
 
@@ -42,7 +46,6 @@ typedef struct s_fork
 {
 	pthread_mutex_t	fork_mutex;
 	int				used;
-	int				last_author;
 }	t_fork;
 
 typedef struct s_philo
@@ -54,6 +57,7 @@ typedef struct s_philo
 	t_table			*table;
 	unsigned long	lasteat_time;
 	pthread_t		thread;
+	// pthread_mutex_t	philo_mutex;
 }	t_philo;
 
 int				init_table(char **av, t_table *table);
@@ -70,6 +74,7 @@ int				create_forkmutexs(t_fork *fork);
 unsigned long	get_now(void);
 unsigned long	get_printms(unsigned long start_time);
 
+int				is_dying(t_table *table);
 int				create_threads(t_table *table);
 void			*philo_task(void *argument);
 int				pickup_forks(t_philo *philo);

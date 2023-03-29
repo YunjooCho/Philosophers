@@ -6,14 +6,14 @@
 #    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/03/29 16:12:28 by yunjcho          ###   ########.fr        #
+#    Updated: 2023/03/29 20:21:36 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g3
-SRCS = main.c init.c parsing.c print.c thread.c timer.c
+SRCS = main.c init.c parsing.c print.c task.c thread.c timer.c
 OBJS = $(SRCS:.c=.o)
 DBJS = $(SRCS:.c=.d)
 
