@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/29 18:03:00 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/29 18:05:06 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,7 @@ void	*philo_task(void *argument)
 	while(1)
 	{ 
 		if (pickup_forks(philo) == -1)
-		{
-			//TODO - Debugging
-			// pthread_mutex_lock(&philo->table->print_mutex);
-			// printf("%d Can't Pickup Forks\n", philo->philo_id);
-			// pthread_mutex_unlock(&philo->table->print_mutex);
-			//TODO - Debugging
 			continue ;
-		}
 		eating(philo);
 		putdown_forks(philo);
 		sleeping(philo);
