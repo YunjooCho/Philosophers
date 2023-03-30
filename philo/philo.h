@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:48 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/29 21:09:09 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/31 01:20:18 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@
 # define USED 1
 # define NOT_USED 0
 
-# define DIED 1
-# define NOT_DIED 0
-
 typedef struct s_table
 {
 	int				philo_cnt;
@@ -38,7 +35,7 @@ typedef struct s_table
 	struct s_fork	*forks;
 	pthread_mutex_t	check_mutex;
 	pthread_mutex_t	print_mutex;
-	// pthread_mutex_t	dying_mutex;
+	pthread_mutex_t	table_mutex;
 	int				is_dying;
 }	t_table;
 
@@ -46,6 +43,7 @@ typedef struct s_fork
 {
 	pthread_mutex_t	fork_mutex;
 	int				used;
+	int				fork_user;
 }	t_fork;
 
 typedef struct s_philo
@@ -57,7 +55,8 @@ typedef struct s_philo
 	t_table			*table;
 	unsigned long	lasteat_time;
 	pthread_t		thread;
-	// pthread_mutex_t	philo_mutex;
+	pthread_mutex_t	philo_mutex;
+	int				checked;
 }	t_philo;
 
 int				init_table(char **av, t_table *table);
@@ -67,7 +66,7 @@ int				check_operators(char *str, int idx);
 int				ph_atoi(char *str);
 
 t_philo			*malloc_philosarr(t_table *table);
-void			init_philo(t_philo *philo, t_table *table, int idx);
+int				init_philo(t_philo *philo, t_table *table, int idx);
 t_fork			*malloc_forksarr(int forks_cnt);
 int				create_forkmutexs(t_fork *fork);
 

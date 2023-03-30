@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:20:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/29 21:21:12 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/31 00:59:17 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ void	*philo_task(void *argument)
 	{ 
 		if (philo->philo_id % 2 == 0)
 			usleep(1000);
-		if (pickup_forks(philo) == -1)
-			continue ;
+		pickup_forks(philo);
 		eating(philo);
 		putdown_forks(philo);
 		sleeping(philo);
@@ -40,25 +39,27 @@ int	pickup_forks(t_philo *philo)
 
 	result = 0;
 	pickup_time = 0;
-	
-	if (!check_leftfork(philo))
+	while (1)
 	{
-		pickup_time = get_printms(philo->table->start_time);
-		pthread_mutex_lock(&philo->table->print_mutex);
-		printf("%ld %d has taken a fork\n", pickup_time, philo->philo_id);
-		pthread_mutex_unlock(&philo->table->print_mutex);
+		if (!check_leftfork(philo))
+		{
+			pickup_time = get_printms(philo->table->start_time);
+			pthread_mutex_lock(&philo->table->print_mutex);
+			printf("%ld %d has taken a left fork\n", pickup_time, philo->philo_id);
+			pthread_mutex_unlock(&philo->table->print_mutex);
+		}
+		if (!check_rightfork(philo))
+		{
+			pickup_time = get_printms(philo->table->start_time);
+			pthread_mutex_lock(&philo->table->print_mutex);
+			printf("%ld %d has taken a right fork\n", pickup_time, philo->philo_id);
+			pthread_mutex_unlock(&philo->table->print_mutex);
+		}
+		if (philo->left_fork->fork_user == philo->philo_id \
+			&& philo->right_fork->fork_user == philo->philo_id)
+			break ;
+		usleep(400);
 	}
-	else
-		result = -1;
-	if (!check_rightfork(philo))
-	{
-		pickup_time = get_printms(philo->table->start_time);
-		pthread_mutex_lock(&philo->table->print_mutex);
-		printf("%ld %d has taken a fork\n", pickup_time, philo->philo_id);
-		pthread_mutex_unlock(&philo->table->print_mutex);
-	}
-	else
-		result = -1;
 	return (result);
 }
 
@@ -72,6 +73,7 @@ int	check_leftfork(t_philo *philo)
 	{
 		pthread_mutex_lock(&philo->left_fork->fork_mutex);
 		philo->left_fork->used = USED;
+		philo->left_fork->fork_user = philo->philo_id;
 		pthread_mutex_unlock(&philo->left_fork->fork_mutex);
 	}
 	else
@@ -91,6 +93,7 @@ int	check_rightfork(t_philo *philo)
 		
 		pthread_mutex_lock(&philo->right_fork->fork_mutex);
 		philo->right_fork->used = USED;
+		philo->right_fork->fork_user = philo->philo_id;
 		pthread_mutex_unlock(&philo->right_fork->fork_mutex);
 	}
 	else
@@ -116,6 +119,10 @@ void	eating(t_philo *philo)
 		eating_time = get_printms(eatstart_time);
 		if (eating_time >= (unsigned long)philo->table->time_to_eat)
 		{
+			pthread_mutex_lock(&philo->philo_mutex);
+			philo->lasteat_time = get_now();
+			philo->eat_cnt++;
+			pthread_mutex_unlock(&philo->philo_mutex);
 			//TODO - Debugging
 			unsigned long	eatend_time = 0;
 			pthread_mutex_lock(&philo->table->print_mutex);
@@ -123,8 +130,6 @@ void	eating(t_philo *philo)
 			printf("%ld %d eating over\n", eatend_time, philo->philo_id);
 			pthread_mutex_unlock(&philo->table->print_mutex);
 			//TODO - Debugging
-			philo->lasteat_time = get_now();
-			philo->eat_cnt++;
 			break ;
 		}
 		usleep(400);
@@ -135,20 +140,34 @@ void	putdown_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->check_mutex);
 	if (philo->left_fork->used)
+	{
+		pthread_mutex_lock(&philo->left_fork->fork_mutex);
 		philo->left_fork->used = NOT_USED;
+		//TODO - Debugging
+		unsigned long	putdown_time;
+		putdown_time = get_printms(philo->table->start_time);
+		pthread_mutex_lock(&philo->table->print_mutex);
+		printf("%ld %d putdown a left fork\n", putdown_time, philo->philo_id);
+		pthread_mutex_unlock(&philo->table->print_mutex);
+		//TODO - Debugging
+		pthread_mutex_unlock(&philo->left_fork->fork_mutex);
+	}
 	pthread_mutex_unlock(&philo->table->check_mutex);
 	pthread_mutex_lock(&philo->table->check_mutex);
 	if (philo->right_fork->used)
+	{
+		pthread_mutex_lock(&philo->right_fork->fork_mutex);
 		philo->right_fork->used = NOT_USED;
+		//TODO - Debugging
+		unsigned long	putdown_time;
+		putdown_time = get_printms(philo->table->start_time);
+		pthread_mutex_lock(&philo->table->print_mutex);
+		printf("%ld %d putdown a right fork\n", putdown_time, philo->philo_id);
+		pthread_mutex_unlock(&philo->table->print_mutex);
+		//TODO - Debugging
+		pthread_mutex_unlock(&philo->right_fork->fork_mutex);
+	}
 	pthread_mutex_unlock(&philo->table->check_mutex);
-
-	//TODO - Debugging
-	unsigned long	putdown_time;
-	putdown_time = get_printms(philo->table->start_time);
-	pthread_mutex_lock(&philo->table->print_mutex);
-	printf("%ld %d putdown a fork\n", putdown_time, philo->philo_id);
-	pthread_mutex_unlock(&philo->table->print_mutex);
-	//TODO - Debugging
 }
 
 void	sleeping(t_philo *philo)
@@ -169,7 +188,6 @@ void	sleeping(t_philo *philo)
 		sleeping_time = get_printms(sleepstart_time);
 		if (sleeping_time >= (unsigned long)philo->table->time_to_sleep)
 		{
-			
 			//TODO - Debugging
 			unsigned long	sleepend_time = 0;
 			pthread_mutex_lock(&philo->table->print_mutex);
