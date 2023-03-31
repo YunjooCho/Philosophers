@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 01:26:34 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/03/31 16:39:15 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int	create_threads(t_table *table)
 			pthread_mutex_unlock(&table->print_mutex);
 			return (-2);
 		}
-		// (void) eat_cnt;
 		pthread_mutex_lock(&table->philos[idx].philo_mutex);
-		if (table->philos[idx].eat_cnt == table->must_eat_cnt && !(table->philos[idx].checked))
+		if (table->philos[idx].eat_cnt == table->must_eat_cnt \
+			&& !(table->philos[idx].checked))
 		{
 			eat_cnt++;
 			table->philos[idx].checked = 1;
@@ -74,6 +74,9 @@ int	create_threads(t_table *table)
 		idx = (idx + (table->philo_cnt - 1)) % table->philo_cnt;
 		usleep(400);
 	}
+	return (0);
+}
+
 	// while(1)
 	// {
 		//while(philo_cnt)
@@ -91,5 +94,3 @@ int	create_threads(t_table *table)
 		wait - 현재 확인 중인 스레드가 죽을 때까지 계속 대기
 		pthread_join();
 	}*/
-	return (0);
-}

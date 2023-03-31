@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:22:55 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 01:20:35 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/03/31 16:56:07 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,26 +90,14 @@ t_fork	*malloc_forksarr(int forks_cnt)
 
 int	init_table(char **av, t_table *table)
 {
-	size_t	i;
-
-	i = 0;
-	while (i < sizeof(t_table))
-		*((char *)table + i++) = 0;
-	table->philo_cnt = ph_atoi(av[1]);
-	table->time_to_die = ph_atoi(av[2]);
-	table->time_to_eat = ph_atoi(av[3]);
-	table->time_to_sleep = ph_atoi(av[4]);
-	table->is_dying = 0;
+	translate_aton(av, table);
 	if (pthread_mutex_init(&table->check_mutex, NULL) < 0 || \
 		pthread_mutex_init(&table->check_mutex, NULL) < 0 || \
 		pthread_mutex_init(&table->table_mutex, NULL) < 0)
 		return (-1);
 	if (table->time_to_die < 0 || table->time_to_eat < 0 || \
-		table->time_to_sleep < 0 || table->must_eat_cnt < 0 || \
-		table->philo_cnt < 0)
+		table->time_to_sleep < 0 || table->philo_cnt < 0)
 		return (-1);
-	if (av[5])
-		table->must_eat_cnt = ph_atoi(av[5]);
 	table->forks = malloc_forksarr(table->philo_cnt);
 	table->philos = malloc_philosarr(table);
 	if (!table->forks || !table->philos)

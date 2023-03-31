@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:25:19 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/29 16:04:52 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/31 16:57:30 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,22 @@ int	ph_atoi(char *str)
 		i++;
 	}
 	return ((int)result);
+}
+
+void	translate_aton(char **av, t_table *table)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < sizeof(t_table))
+		*((char *)table + i++) = 0;
+	table->philo_cnt = ph_atoi(av[1]);
+	table->time_to_die = ph_atoi(av[2]);
+	table->time_to_eat = ph_atoi(av[3]);
+	table->time_to_sleep = ph_atoi(av[4]);
+	table->is_dying = 0;
+	if (!av[5])
+		table->must_eat_cnt = -1;
+	else
+		table->must_eat_cnt = ph_atoi(av[5]);
 }

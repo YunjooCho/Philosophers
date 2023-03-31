@@ -6,13 +6,13 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:07:27 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 01:27:17 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/03/31 16:28:26 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	_leaks_check()
+void	_leaks_check(void)
 {
 	system("leaks philo");
 }
@@ -20,7 +20,7 @@ void	_leaks_check()
 int	main(int ac, char **av)
 {
 	int		flag;
-	t_table table;
+	t_table	table;
 
 	flag = 0;
 	if (ac <= 4 || ac >= 7)
@@ -33,6 +33,7 @@ int	main(int ac, char **av)
 		// system("leaks philo");
 		return (print_error("Parsing Fail"));
 	}
+	print_table(&table);
 	flag = create_threads(&table);
 	if (flag == -1)
 	{

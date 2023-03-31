@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:48 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 01:20:18 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/03/31 16:53:54 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int				is_digit(int c);
 int				is_plus_minus(char *str, int idx);
 int				check_operators(char *str, int idx);
 int				ph_atoi(char *str);
+void			translate_aton(char **av, t_table *table);
 
 t_philo			*malloc_philosarr(t_table *table);
 int				init_philo(t_philo *philo, t_table *table, int idx);
@@ -77,6 +78,7 @@ int				is_dying(t_table *table);
 int				create_threads(t_table *table);
 void			*philo_task(void *argument);
 int				pickup_forks(t_philo *philo);
+void			print_pickupfork(t_philo *philo, int flag);
 int				check_leftfork(t_philo *philo);
 int				check_rightfork(t_philo *philo);
 void			eating(t_philo *philo);
@@ -85,6 +87,7 @@ void			sleeping(t_philo *philo);
 void			thinking(t_philo *philo);
 
 int				print_error(char *str);
+void			print_table(t_table *table);
 void			print_philos(int cnt, t_philo *philos);
 
 #endif
