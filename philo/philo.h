@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:48 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 18:15:59 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/31 18:25:50 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void			thinking(t_philo *philo);
 
 int				print_error(char *str);
 void			print_table(t_table *table);
+void			print_forks(int cnt, t_fork *forks);
 void			print_philos(int cnt, t_philo *philos);
 
 #endif

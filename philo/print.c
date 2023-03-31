@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:57:39 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 16:50:45 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/31 18:25:05 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,15 @@ void	print_philos(int cnt, t_philo *philos)
 	}
 }
 
-// void	print_forks(int cnt, t_fork *forks)
-// {
-// 	int	idx;
+void	print_forks(int cnt, t_fork *forks)
+{
+	int	idx;
 
-// 	idx = 0;
-// 	while (idx < cnt)
-// 	{
-// 		printf("forks[%d] used : %d\n", \
-// 		idx + 1, forks[idx].used);
-// 		idx++;
-// 	}
-// }
+	idx = 0;
+	while (idx < cnt)
+	{
+		printf("forks[%d] used : %d\n", \
+		idx + 1, forks[idx].used);
+		idx++;
+	}
+}
