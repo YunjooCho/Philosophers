@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 18:20:13 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/31 18:43:08 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ int	create_threads(t_table *table)
 {
 	int	idx;
 	int	result;
+	int	status;
 
 	idx = 0;
 	result = 0;
+	status = 0;
 	table->start_time = get_now();
 	while (idx < table->philo_cnt)
 	{
@@ -35,6 +37,15 @@ int	create_threads(t_table *table)
 	result = monitoring(table);
 	if (!result)
 		return (result);
+	idx = 0;
+	while (idx < table->philo_cnt)
+	{
+		if (!pthread_join(table->philos[idx].thread, (void **)&status))
+		{
+			printf("thread %d status : %d\n", idx + 1, status);
+			idx++;
+		}
+	}
 	return (0);
 }
 
