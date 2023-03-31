@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 16:39:15 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/31 18:14:18 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,15 @@
 
 int	create_threads(t_table *table)
 {
-	int				idx;
-	int				eat_cnt;
-	unsigned long	print_time;
-	unsigned long	noteating_time;
+	int	idx;
+	int	result;
 
 	idx = 0;
-	eat_cnt = 0;
-	print_time = 0;
-	noteating_time = 0;
+	result = 0;
 	table->start_time = get_now();
-	// printf("Init start time : %ld\n", table->start_time);
 	while (idx < table->philo_cnt)
 	{
+		table->philos[idx].lasteat_time = table->start_time;
 		if (pthread_create(&table->philos[idx].thread, NULL, philo_task, \
 		(void *)&table->philos[idx]) == -1)
 		{
@@ -36,61 +32,71 @@ int	create_threads(t_table *table)
 		}
 		idx++;
 	}
-	idx = 0;
-	while (idx < table->philo_cnt)
+	result = monitoring(table);
+	if (!result)
+		return (result);
+	return (0);
+}
+
+int	is_dying(t_table *table, int idx)
+{
+	unsigned long	print_time;
+	unsigned long	noteating_time;
+
+	print_time = 0;
+	noteating_time = 0;
+	pthread_mutex_lock(&table->philos[idx].philo_mutex);
+	noteating_time = get_printms(table->philos[idx].lasteat_time);
+	pthread_mutex_unlock(&table->philos[idx].philo_mutex);
+	if (noteating_time > (unsigned long)table->time_to_die)
 	{
-		pthread_mutex_lock(&table->philos[idx].philo_mutex);
-		noteating_time = get_printms(table->philos[idx].lasteat_time);
-		pthread_mutex_unlock(&table->philos[idx].philo_mutex);
-		if (noteating_time > (unsigned long)table->time_to_die)
+		pthread_mutex_lock(&table->table_mutex);
+		table->is_dying = idx + 1;
+		pthread_mutex_unlock(&table->table_mutex);
+		pthread_mutex_lock(&table->print_mutex);
+		print_time = get_printms(table->start_time);
+		printf("%ld %d is died\n", print_time, table->is_dying);
+		pthread_mutex_unlock(&table->print_mutex);
+		return (1);
+	}
+	return (0);
+}
+
+int	is_musteat(t_table *table, int idx, int *alleat_cnt)
+{
+	pthread_mutex_lock(&table->philos[idx].philo_mutex);
+	if (table->philos[idx].eat_cnt == table->must_eat_cnt \
+		&& !(table->philos[idx].checked))
+	{
+		(*alleat_cnt)++;
+		table->philos[idx].checked = USED;
+		if (*alleat_cnt == table->philo_cnt)
 		{
 			pthread_mutex_lock(&table->table_mutex);
 			table->is_dying = idx + 1;
 			pthread_mutex_unlock(&table->table_mutex);
-			pthread_mutex_lock(&table->print_mutex);
-			print_time = get_printms(table->start_time);
-			printf("%ld %d is died\n", print_time, table->is_dying);
-			pthread_mutex_unlock(&table->print_mutex);
+			return (1);
+		}
+	}
+	pthread_mutex_unlock(&table->philos[idx].philo_mutex);
+	return (0);
+}
+
+int	monitoring(t_table *table)
+{
+	int	idx;
+	int	alleat_cnt;
+
+	idx = 0;
+	alleat_cnt = 0;
+	while (idx < table->philo_cnt)
+	{
+		if (is_dying(table, idx))
 			return (-2);
-		}
-		pthread_mutex_lock(&table->philos[idx].philo_mutex);
-		if (table->philos[idx].eat_cnt == table->must_eat_cnt \
-			&& !(table->philos[idx].checked))
-		{
-			eat_cnt++;
-			table->philos[idx].checked = 1;
-			if (eat_cnt == table->philo_cnt)
-			{
-				pthread_mutex_lock(&table->table_mutex);
-				table->is_dying = idx + 1;
-				pthread_mutex_unlock(&table->table_mutex);
-				pthread_mutex_lock(&table->print_mutex);
-				printf("Every one must eat over\n");
-				pthread_mutex_unlock(&table->print_mutex);
-				return (0);
-			}
-		}
-		pthread_mutex_unlock(&table->philos[idx].philo_mutex);
+		if (is_musteat(table, idx, &alleat_cnt))
+			return (1);
 		idx = (idx + (table->philo_cnt - 1)) % table->philo_cnt;
 		usleep(400);
 	}
 	return (0);
 }
-
-	// while(1)
-	// {
-		//while(philo_cnt)
-			//int cnt;
-			//필로구조체 순회하면서 현재 시간 - 최근 먹은시간 > 안먹으면 죽는시간
-			// if (현재 시간 - 최근 먹은시간 > 안먹으면 죽는시간 == true)
-					//table.isdying = true;
-			//if(현재 필로 eat_cnt == must_eat)
-				//ent++	
-		// if (cnt == 필로 인원수)
-				//table.isdying = true;
-	// }
-	/*while (필로수)
-	{
-		wait - 현재 확인 중인 스레드가 죽을 때까지 계속 대기
-		pthread_join();
-	}*/

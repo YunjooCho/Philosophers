@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:07:27 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 16:28:26 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/31 18:14:35 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,3 @@ int	main(int ac, char **av)
 	// atexit(_leaks_check);
 	return (0);
 }
-
-//leaks 체크
-//eat_cnt 체크와 죽는 체크를 같이 두면 결과값이 이상함(현재 상태)

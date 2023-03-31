@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:48 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 16:53:54 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/31 18:15:59 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,10 @@ int				create_forkmutexs(t_fork *fork);
 unsigned long	get_now(void);
 unsigned long	get_printms(unsigned long start_time);
 
-int				is_dying(t_table *table);
 int				create_threads(t_table *table);
+int				monitoring(t_table *table);
+int				is_dying(t_table *table, int idx);
+int				is_musteat(t_table *table, int idx, int *alleat_cnt);
 void			*philo_task(void *argument);
 int				pickup_forks(t_philo *philo);
 void			print_pickupfork(t_philo *philo, int flag);

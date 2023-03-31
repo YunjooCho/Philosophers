@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:22:55 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 16:56:07 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/31 17:47:10 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@ int	init_philo(t_philo *philo, t_table *table, int idx)
 	philo->left_fork = &table->forks[idx];
 	philo->right_fork = &table->forks[right_idx];
 	philo->table = table;
+	philo->lasteat_time = 0;
 	philo->thread = 0;
 	if (pthread_mutex_init(&philo->philo_mutex, NULL) < 0)
 		return (-1);
-	philo->checked = 0;
+	philo->checked = NOT_USED;
 	return (0);
 }
 

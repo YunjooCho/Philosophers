@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:20:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 17:00:30 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/03/31 17:38:27 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	*philo_task(void *argument)
 
 	philo = NULL;
 	philo = (void *)argument;
-	philo->lasteat_time = philo->table->start_time;
 	while (1)
 	{
 		if (philo->philo_id % 2 == 0)
