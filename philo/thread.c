@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 18:43:08 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/03 15:57:40 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@ int	create_threads(t_table *table)
 {
 	int	idx;
 	int	result;
-	int	status;
 
 	idx = 0;
 	result = 0;
-	status = 0;
 	table->start_time = get_now();
 	while (idx < table->philo_cnt)
 	{
@@ -35,17 +33,13 @@ int	create_threads(t_table *table)
 		idx++;
 	}
 	result = monitoring(table);
-	if (!result)
-		return (result);
-	idx = 0;
-	while (idx < table->philo_cnt)
+	if (result)
 	{
-		if (!pthread_join(table->philos[idx].thread, (void **)&status))
-		{
-			printf("thread %d status : %d\n", idx + 1, status);
-			idx++;
-		}
+		//TODO - 모든 스레드 강제 종료 함수 구현하기
+		//thread_exit(table);
+		return (result);
 	}
+	// thread_exit(table);
 	return (0);
 }
 
@@ -108,6 +102,24 @@ int	monitoring(t_table *table)
 			return (1);
 		idx = (idx + (table->philo_cnt - 1)) % table->philo_cnt;
 		usleep(400);
+	}
+	return (0);
+}
+
+int	thread_exit(t_table *table)
+{
+	int	idx;
+	int	status;
+
+	idx = 0;
+	status = 0;
+	while (idx < table->philo_cnt)
+	{
+		if (!pthread_join(table->philos[idx].thread, (void **)&status))
+		{
+			printf("thread %d status : %d\n", idx + 1, status);
+			idx++;
+		}
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:22:55 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 18:30:06 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/03 15:03:38 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,10 @@ int	init_philo(t_philo *philo, t_table *table, int idx)
 	philo->philo_id = idx + 1;
 	philo->eat_cnt = 0;
 	philo->left_fork = &table->forks[idx];
-	philo->right_fork = &table->forks[right_idx];
-
-	if (philo->left_fork == philo->right_fork)
-		return (-1);
-
+	if (idx == right_idx)
+		philo->right_fork = NULL;
+	else
+		philo->right_fork = &table->forks[right_idx];
 	philo->table = table;
 	philo->lasteat_time = 0;
 	philo->thread = 0;
@@ -96,6 +95,8 @@ t_fork	*malloc_forksarr(int forks_cnt)
 int	init_table(char **av, t_table *table)
 {
 	translate_aton(av, table);
+	if (!table->philo_cnt)
+		return (-1);
 	if (pthread_mutex_init(&table->check_mutex, NULL) < 0 || \
 		pthread_mutex_init(&table->check_mutex, NULL) < 0 || \
 		pthread_mutex_init(&table->table_mutex, NULL) < 0)

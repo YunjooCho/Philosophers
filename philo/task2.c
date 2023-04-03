@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 16:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 18:15:36 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/03 15:32:51 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ void	sleeping(t_philo *philo)
 	pthread_mutex_unlock(&philo->table->print_mutex);
 	while (1)
 	{
-		usleep(400);
 		sleeping_time = get_printms(sleepstart_time);
 		if (sleeping_time >= (unsigned long)philo->table->time_to_sleep)
 			break ;
+		usleep(400);
 	}
 }
 

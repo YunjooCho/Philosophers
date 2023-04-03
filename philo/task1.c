@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:20:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 17:38:27 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/03 16:03:54 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,25 @@ int	pickup_forks(t_philo *philo)
 			print_pickupfork(philo, 1);
 		if (!check_rightfork(philo))
 			print_pickupfork(philo, 2);
-		if (philo->left_fork->fork_user == philo->philo_id \
-			&& philo->right_fork->fork_user == philo->philo_id)
+		if (is_pickup(philo))
 			break ;
 		usleep(400);
 	}
+	return (result);
+}
+
+int	is_pickup(t_philo *philo)
+{
+	int	result;
+
+	result = 0;
+	if (!philo->left_fork || !philo->right_fork)
+		return (result);
+	if (philo->left_fork->fork_user == philo->philo_id \
+		&& philo->right_fork->fork_user == philo->philo_id)
+		result = 1;
+	else
+		result = 0;
 	return (result);
 }
 
@@ -97,7 +111,9 @@ int	check_rightfork(t_philo *philo)
 
 	result = 0;
 	pthread_mutex_lock(&philo->table->check_mutex);
-	if (!philo->right_fork->used)
+	if (!philo->right_fork)
+		usleep(1000);
+	else if (!philo->right_fork->used)
 	{
 		pthread_mutex_lock(&philo->right_fork->fork_mutex);
 		philo->right_fork->used = USED;
