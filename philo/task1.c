@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:20:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/03 17:05:11 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/03 22:16:43 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	*philo_task(void *argument)
 	{
 		if (philo->philo_id % 2 == 0)
 			usleep(1000);
-		pickup_forks(philo);
+		if(pickup_forks(philo) < 0)
+			return (NULL);
 		eating(philo);
 		putdown_forks(philo);
 		sleeping(philo);
@@ -33,22 +34,32 @@ void	*philo_task(void *argument)
 
 int	pickup_forks(t_philo *philo)
 {
-	int				result;
 	unsigned long	pickup_time;
 
-	result = 0;
 	pickup_time = 0;
-	while (1)
-	{
-		if (!check_leftfork(philo))
-			print_pickupfork(philo, 1);
-		if (!check_rightfork(philo))
-			print_pickupfork(philo, 2);
-		if (is_pickup(philo))
-			break ;
-		usleep(400);
-	}
-	return (result);
+	if (thread_kill(philo))
+		return (-1);
+	// while (1)
+	// {
+	// 	// if (!check_leftfork(philo))
+	// 	// 	print_pickupfork(philo, 1);
+	// 	// if (!check_rightfork(philo))
+	// 	// 	print_pickupfork(philo, 2);
+	// 	if (check_leftfork(philo) < 0)
+	// 		return (-1);
+	// 	if (check_rightfork(philo) < 0)
+	// 		return (-1);
+	// 	if (is_pickup(philo))
+	// 		break ;
+	// 	usleep(400);
+	// }
+	if (check_leftfork(philo) < 0)
+		return (-1);
+	if (check_rightfork(philo) < 0)
+		return (-1);
+	if (thread_kill(philo))
+		return (-1);
+	return (0);
 }
 
 int	is_pickup(t_philo *philo)
@@ -71,17 +82,23 @@ int	check_leftfork(t_philo *philo)
 	int	result;
 
 	result = 0;
-	pthread_mutex_lock(&philo->table->check_mutex);
-	if (!philo->left_fork->used)
+	
+	while (1)
 	{
-		pthread_mutex_lock(&philo->left_fork->fork_mutex);
-		philo->left_fork->used = USED;
-		philo->left_fork->fork_user = philo->philo_id;
-		pthread_mutex_unlock(&philo->left_fork->fork_mutex);
+		pthread_mutex_lock(&philo->table->check_mutex);
+		if (!philo->left_fork->used)
+		{
+			pthread_mutex_lock(&philo->left_fork->fork_mutex);
+			philo->left_fork->used = USED;
+			philo->left_fork->fork_user = philo->philo_id;
+			// pthread_mutex_unlock(&philo->left_fork->fork_mutex);
+			print_pickupfork(philo, 1);
+			break ;
+		}
+		// else
+		// 	result = -1;
+		pthread_mutex_unlock(&philo->table->check_mutex);
 	}
-	else
-		result = -1;
-	pthread_mutex_unlock(&philo->table->check_mutex);
 	return (result);
 }
 
@@ -91,17 +108,22 @@ int	check_rightfork(t_philo *philo)
 
 	result = 0;
 	pthread_mutex_lock(&philo->table->check_mutex);
-	if (!philo->right_fork)
-		usleep(1000);
-	else if (!philo->right_fork->used)
+	while (1)
 	{
-		pthread_mutex_lock(&philo->right_fork->fork_mutex);
-		philo->right_fork->used = USED;
-		philo->right_fork->fork_user = philo->philo_id;
-		pthread_mutex_unlock(&philo->right_fork->fork_mutex);
+		if (!philo->right_fork)
+			continue ;
+		else if (!philo->right_fork->used)
+		{
+			pthread_mutex_lock(&philo->right_fork->fork_mutex);
+			philo->right_fork->used = USED;
+			philo->right_fork->fork_user = philo->philo_id;
+			// pthread_mutex_unlock(&philo->right_fork->fork_mutex);
+			print_pickupfork(philo, 2);
+			break ;
+		}
+		// else
+		// 	result = -1;
+		pthread_mutex_unlock(&philo->table->check_mutex);
 	}
-	else
-		result = -1;
-	pthread_mutex_unlock(&philo->table->check_mutex);
 	return (result);
 }

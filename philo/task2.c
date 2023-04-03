@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 16:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/03 17:41:22 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/03 22:12:17 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	putdown_forks(t_philo *philo)
 	pthread_mutex_lock(&philo->table->check_mutex);
 	if (philo->left_fork->used)
 	{
-		pthread_mutex_lock(&philo->left_fork->fork_mutex);
+		// pthread_mutex_lock(&philo->left_fork->fork_mutex);
 		philo->left_fork->used = NOT_USED;
 		pthread_mutex_unlock(&philo->left_fork->fork_mutex);
 	}
@@ -52,7 +52,7 @@ void	putdown_forks(t_philo *philo)
 	pthread_mutex_lock(&philo->table->check_mutex);
 	if (philo->right_fork->used)
 	{
-		pthread_mutex_lock(&philo->right_fork->fork_mutex);
+		// pthread_mutex_lock(&philo->right_fork->fork_mutex);
 		philo->right_fork->used = NOT_USED;
 		pthread_mutex_unlock(&philo->right_fork->fork_mutex);
 	}
@@ -88,4 +88,13 @@ void	thinking(t_philo *philo)
 	pthread_mutex_lock(&philo->table->print_mutex);
 	printf("%ld %d is thinking\n", print_time, philo->philo_id);
 	pthread_mutex_unlock(&philo->table->print_mutex);
+}
+
+int	thread_kill(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->table->table_mutex);
+	if (philo->table->is_dying)
+		return (1);
+	pthread_mutex_unlock(&philo->table->table_mutex);
+	return (0);
 }
