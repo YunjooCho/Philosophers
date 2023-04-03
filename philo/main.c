@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:07:27 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/03 17:02:03 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/03 17:07:21 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,8 @@ int	main(int ac, char **av)
 		system("leaks philo");
 		return (print_error("Philosopher died"));
 	}
+	print_philos(table.philo_cnt, table.philos);
 	return (0);
 }
+//leaks 체크 시 스레드가 계속 출력됨
+//./philo 3 50 200 100
