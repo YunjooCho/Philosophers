@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:48 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/03 15:44:38 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/03 17:01:24 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,17 @@ int				is_plus_minus(char *str, int idx);
 int				check_operators(char *str, int idx);
 int				ph_atoi(char *str);
 void			translate_aton(char **av, t_table *table);
-
 t_philo			*malloc_philosarr(t_table *table);
 int				init_philo(t_philo *philo, t_table *table, int idx);
 t_fork			*malloc_forksarr(int forks_cnt);
 int				create_forkmutexs(t_fork *fork);
-
 unsigned long	get_now(void);
 unsigned long	get_printms(unsigned long start_time);
-
 int				create_threads(t_table *table);
 int				monitoring(t_table *table);
 int				is_dying(t_table *table, int idx);
 int				is_musteat(t_table *table, int idx, int *alleat_cnt);
-int				thread_exit(t_table *table);
+int				threads_detach(t_table *table);
 void			*philo_task(void *argument);
 int				pickup_forks(t_philo *philo);
 void			print_pickupfork(t_philo *philo, int flag);
@@ -89,7 +86,6 @@ void			eating(t_philo *philo);
 void			putdown_forks(t_philo *philo);
 void			sleeping(t_philo *philo);
 void			thinking(t_philo *philo);
-
 int				print_error(char *str);
 void			print_table(t_table *table);
 void			print_forks(int cnt, t_fork *forks);

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:20:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/03 16:03:54 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/03 17:05:11 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,26 +64,6 @@ int	is_pickup(t_philo *philo)
 	else
 		result = 0;
 	return (result);
-}
-
-void	print_pickupfork(t_philo *philo, int flag)
-{
-	unsigned long	pickup_time;
-
-	pickup_time = 0;
-	pickup_time = get_printms(philo->table->start_time);
-	pthread_mutex_lock(&philo->table->print_mutex);
-	if (flag == 1)
-	{
-		printf("%ld %d has taken a fork\n", \
-			pickup_time, philo->philo_id);
-	}
-	else
-	{
-		printf("%ld %d has taken a fork\n", \
-			pickup_time, philo->philo_id);
-	}
-	pthread_mutex_unlock(&philo->table->print_mutex);
 }
 
 int	check_leftfork(t_philo *philo)

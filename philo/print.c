@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:57:39 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/03/31 18:25:05 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/03 16:59:45 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,26 @@ int	print_error(char *str)
 	else if (*str)
 		printf("Error : %s\n", str);
 	return (-1);
+}
+
+void	print_pickupfork(t_philo *philo, int flag)
+{
+	unsigned long	pickup_time;
+
+	pickup_time = 0;
+	pickup_time = get_printms(philo->table->start_time);
+	pthread_mutex_lock(&philo->table->print_mutex);
+	if (flag == 1)
+	{
+		printf("%ld %d has taken a fork\n", \
+			pickup_time, philo->philo_id);
+	}
+	else
+	{
+		printf("%ld %d has taken a fork\n", \
+			pickup_time, philo->philo_id);
+	}
+	pthread_mutex_unlock(&philo->table->print_mutex);
 }
 
 void	print_table(t_table *table)

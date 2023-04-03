@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/03 15:57:40 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/03 17:05:18 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,9 @@ int	create_threads(t_table *table)
 	result = monitoring(table);
 	if (result)
 	{
-		//TODO - 모든 스레드 강제 종료 함수 구현하기
-		//thread_exit(table);
+		threads_detach(table);
 		return (result);
 	}
-	// thread_exit(table);
 	return (0);
 }
 
@@ -61,7 +59,6 @@ int	is_dying(t_table *table, int idx)
 		pthread_mutex_lock(&table->print_mutex);
 		print_time = get_printms(table->start_time);
 		printf("%ld %d is died\n", print_time, table->is_dying);
-		pthread_mutex_unlock(&table->print_mutex);
 		return (1);
 	}
 	return (0);
@@ -79,7 +76,6 @@ int	is_musteat(t_table *table, int idx, int *alleat_cnt)
 		{
 			pthread_mutex_lock(&table->table_mutex);
 			table->is_dying = idx + 1;
-			pthread_mutex_unlock(&table->table_mutex);
 			return (1);
 		}
 	}
@@ -106,20 +102,15 @@ int	monitoring(t_table *table)
 	return (0);
 }
 
-int	thread_exit(t_table *table)
+int	threads_detach(t_table *table)
 {
 	int	idx;
-	int	status;
 
 	idx = 0;
-	status = 0;
 	while (idx < table->philo_cnt)
 	{
-		if (!pthread_join(table->philos[idx].thread, (void **)&status))
-		{
-			printf("thread %d status : %d\n", idx + 1, status);
+		if (!pthread_detach(table->philos[idx].thread))
 			idx++;
-		}
 	}
 	return (0);
 }
