@@ -6,11 +6,11 @@
 #    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/04/03 17:51:51 by yunjcho          ###   ########.fr        #
+#    Updated: 2023/04/03 17:52:06 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philo
+NAME = philo_bonus
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g3
 SRCS = main.c init.c parsing.c print.c task1.c task2.c thread.c timer.c
