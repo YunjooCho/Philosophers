@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/03 17:11:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/05 00:07:44 by yunjcho          ###   ########.fr       */
+/*   Created: 2023/04/04 23:59:33 by yunjcho           #+#    #+#             */
+/*   Updated: 2023/04/05 00:11:16 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int main(int ac, char **av)
+void	parent_proc(t_table *table, t_philo *philos_arr, int idx, pid_t *pid)
 {
-	t_table table;
+	if (init_philo(&philos_arr[idx], table, idx, pid) == -1)
+		free(philos_arr);
+}
 
-	if (ac <= 4 || ac >= 7)
-		return (print_error("Incorrect number of parameters"));
-	if (init_table(av, &table) == -1)
-		return (print_error("Init table Fail"));
-	// create_process(&table);
-	// print_table(&table);
-	// print_philos(table.philo_cnt, table.philos);
-	return (0);
+void	children_proc(void)
+{
+	printf("child\n");
 }

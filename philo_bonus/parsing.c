@@ -6,11 +6,11 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:25:19 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/03 14:15:57 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/04 23:27:57 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 int	is_digit(int c)
 {
