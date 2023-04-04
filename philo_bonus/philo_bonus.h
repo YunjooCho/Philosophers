@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 17:11:43 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/05 00:11:40 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/05 03:33:23 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 
 # define USED 1
 # define NOT_USED 0
+# define FORK_CNT 2
 
 typedef struct s_table
 {
@@ -61,10 +62,17 @@ int				check_operators(char *str, int idx);
 int				ph_atoi(char *str);
 void			translate_aton(char **av, t_table *table);
 t_philo			*malloc_philosarr(t_table *table);
-int				init_philo(t_philo *philo, t_table *table, int idx, pid_t *pid);
-
-void			parent_proc(t_table *table, t_philo *philos_arr, int idx, pid_t *pid);
-void			children_proc(void);
+int				init_philo(t_philo *philo, t_table *table, int idx);
+unsigned long	get_now(void);
+unsigned long	get_printms(unsigned long start_time);
+int				create_process(t_table *table);
+void			parent_proc(t_philo *philo, int *pid);
+void			children_proc(t_philo *philo);
+int				pickup_forks(t_philo *philo);
+int				eating(t_philo *philo);
+int				putdown_forks(t_philo *philo);
+int				sleeping(t_philo *philo);
+int				thinking(t_philo *philo);
 
 int				print_error(char *str);
 void			print_table(t_table *table);

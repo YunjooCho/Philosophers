@@ -6,23 +6,23 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:22:55 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/05 00:11:56 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/05 03:43:52 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	init_philo(t_philo *philo, t_table *table, int idx, pid_t *pid)
+int	init_philo(t_philo *philo, t_table *table, int idx)
 {
 	int	right_idx;
 
 	right_idx = (idx + (table->philo_cnt - 1)) % table->philo_cnt;
-	philo->pid = *pid;
+	philo->pid = 0;
 	philo->philo_id = idx + 1;
 	philo->eat_cnt = 0;
 	philo->fork_cnt = 0;
 	philo->table = table;
-	philo->lasteat_time = 0;
+	philo->lasteat_time = table->start_time;
 	if (pthread_mutex_init(&philo->philo_mutex, NULL) < 0)
 		return (-1);
 	philo->checked = NOT_USED;
@@ -32,7 +32,6 @@ int	init_philo(t_philo *philo, t_table *table, int idx, pid_t *pid)
 t_philo	*malloc_philosarr(t_table *table)
 {
 	long	idx;
-	pid_t	pid;
 	t_philo	*philos_arr;
 
 	idx = 0;
@@ -42,13 +41,8 @@ t_philo	*malloc_philosarr(t_table *table)
 		return (philos_arr);
 	while (idx < table->philo_cnt)
 	{
-		pid = fork();
-		if (pid)
-			parent_proc(table, philos_arr, idx, &pid);
-		else
-		{
-			children_proc();
-		}
+		if (init_philo(&philos_arr[idx], table, idx) == -1)
+			free(philos_arr);
 		idx++;
 	}
 	return (philos_arr);
