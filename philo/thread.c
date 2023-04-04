@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/04 21:38:37 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/04 22:00:41 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ int	create_threads(t_table *table)
 		idx++;
 	}
 	result = monitoring(table);
-	if (!result)
-		return (result);
-	// threads_join(table);
+	threads_join(table);
 	return (result);
 }
 

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:20:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/04 21:15:13 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/04 22:02:51 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	*philo_task(void *argument)
 	{
 		if (philo->philo_id % 2 == 0)
 			usleep(1000);
+		if (is_end(philo))
+			return (NULL);
 		if (pickup_forks(philo) < 0)
 			return (NULL);
 		if (eating(philo) < 0)
@@ -50,8 +52,15 @@ int	pickup_forks(t_philo *philo)
 
 int	check_leftfork(t_philo *philo)
 {
+	if (is_end(philo))
+		return (-1);
 	while (1)
 	{
+		if (is_end(philo))
+		{
+			thread_kill(philo, 1);
+			return (-1);
+		}
 		pthread_mutex_lock(&philo->table->check_mutex);
 		if (!philo->left_fork->used)
 		{
@@ -70,8 +79,18 @@ int	check_leftfork(t_philo *philo)
 
 int	check_rightfork(t_philo *philo)
 {
+	if (is_end(philo))
+	{
+		thread_kill(philo, 1);
+		return (-1);
+	}
 	while (1)
 	{
+		if (is_end(philo))
+		{
+			thread_kill(philo, 1);
+			return (-1);
+		}
 		pthread_mutex_lock(&philo->table->check_mutex);
 		if (!philo->right_fork)
 		{

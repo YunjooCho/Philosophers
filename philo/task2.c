@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 16:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/04 21:33:26 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/04 22:04:13 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,17 @@ int	eating(t_philo *philo)
 	eatstart_time = get_now();
 	if (is_end(philo))
 	{
-		thread_kill(philo, 3);
+		thread_kill(philo, 2);
 		return (-1);
 	}
 	print_starteat(philo);
 	while (1)
 	{
+		if (is_end(philo))
+		{
+			thread_kill(philo, 2);
+			return (-1);
+		}
 		eating_time = get_printms(eatstart_time);
 		if (eating_time >= (unsigned long)philo->table->time_to_eat)
 		{
@@ -79,6 +84,8 @@ int	sleeping(t_philo *philo)
 	pthread_mutex_unlock(&philo->table->print_mutex);
 	while (1)
 	{
+		if (is_end(philo))
+			return (-1);
 		sleeping_time = get_printms(sleepstart_time);
 		if (sleeping_time >= (unsigned long)philo->table->time_to_sleep)
 			break ;
@@ -127,7 +134,7 @@ void	thread_kill(t_philo *philo, int flag)
 		pthread_mutex_unlock(&philo->left_fork->fork_mutex);
 		pthread_mutex_unlock(&philo->table->check_mutex);
 	}
-	else if (flag == 2)
+	else
 	{
 		pthread_mutex_lock(&philo->table->check_mutex);
 		philo->left_fork->used = NOT_USED;
