@@ -6,26 +6,25 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 16:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/03 22:12:17 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/04 18:43:43 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	eating(t_philo *philo)
+int	eating(t_philo *philo)
 {
 	unsigned long	eatstart_time;
 	unsigned long	eating_time;
-	unsigned long	print_time;
 
 	eating_time = 0;
 	eatstart_time = get_now();
-	print_time = get_printms(philo->table->start_time);
-	pthread_mutex_lock(&philo->table->print_mutex);
-	printf("%ld %d is eating\n", print_time, philo->philo_id);
-	pthread_mutex_unlock(&philo->table->print_mutex);
+	if (print_starteat(philo) < 0)
+		return (-1);
 	while (1)
 	{
+		if (thread_kill(philo))
+			return (-1);
 		eating_time = get_printms(eatstart_time);
 		if (eating_time >= (unsigned long)philo->table->time_to_eat)
 		{
@@ -37,64 +36,96 @@ void	eating(t_philo *philo)
 		}
 		usleep(400);
 	}
+	return (0);
 }
 
-void	putdown_forks(t_philo *philo)
+int	putdown_forks(t_philo *philo)
 {
+	if (thread_kill(philo))
+		return (-1);
 	pthread_mutex_lock(&philo->table->check_mutex);
 	if (philo->left_fork->used)
 	{
-		// pthread_mutex_lock(&philo->left_fork->fork_mutex);
 		philo->left_fork->used = NOT_USED;
 		pthread_mutex_unlock(&philo->left_fork->fork_mutex);
 	}
 	pthread_mutex_unlock(&philo->table->check_mutex);
+	if (thread_kill(philo))
+		return (-1);
 	pthread_mutex_lock(&philo->table->check_mutex);
 	if (philo->right_fork->used)
 	{
-		// pthread_mutex_lock(&philo->right_fork->fork_mutex);
 		philo->right_fork->used = NOT_USED;
 		pthread_mutex_unlock(&philo->right_fork->fork_mutex);
 	}
 	pthread_mutex_unlock(&philo->table->check_mutex);
+	if (thread_kill(philo))
+		return (-1);
+	return (0);
 }
 
-void	sleeping(t_philo *philo)
+int	sleeping(t_philo *philo)
 {
 	unsigned long	sleepstart_time;
 	unsigned long	sleeping_time;
 	unsigned long	print_time;
 
-	sleepstart_time = get_now();
 	sleeping_time = 0;
+	sleepstart_time = get_now();
 	print_time = get_printms(philo->table->start_time);
 	pthread_mutex_lock(&philo->table->print_mutex);
+	if (thread_kill(philo))
+	{
+		pthread_mutex_unlock(&philo->table->print_mutex);
+		return (-1);
+	}
 	printf("%ld %d is sleeping\n", print_time, philo->philo_id);
 	pthread_mutex_unlock(&philo->table->print_mutex);
 	while (1)
 	{
+		if (thread_kill(philo))
+			return (-1);
 		sleeping_time = get_printms(sleepstart_time);
 		if (sleeping_time >= (unsigned long)philo->table->time_to_sleep)
 			break ;
 		usleep(400);
 	}
+	return (0);
 }
 
-void	thinking(t_philo *philo)
+int	thinking(t_philo *philo)
 {
 	unsigned long	print_time;
 
 	print_time = get_printms(philo->table->start_time);
 	pthread_mutex_lock(&philo->table->print_mutex);
+	if (thread_kill(philo))
+	{
+		pthread_mutex_unlock(&philo->table->print_mutex);
+		return (-1);
+	}
 	printf("%ld %d is thinking\n", print_time, philo->philo_id);
 	pthread_mutex_unlock(&philo->table->print_mutex);
+	return (0);
 }
 
 int	thread_kill(t_philo *philo)
 {
+	int	idx;
+
+	idx = 0;
 	pthread_mutex_lock(&philo->table->table_mutex);
 	if (philo->table->is_dying)
+	{
+		pthread_mutex_unlock(&philo->table->table_mutex);
+		while (idx < philo->table->philo_cnt)
+		{
+			if (philo->table->forks[idx].used)
+				pthread_mutex_unlock(&philo->table->forks[idx].fork_mutex);
+			idx++;
+		}
 		return (1);
+	}
 	pthread_mutex_unlock(&philo->table->table_mutex);
 	return (0);
 }

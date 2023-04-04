@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:57:39 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/03 16:59:45 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/04 17:33:58 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,57 @@ int	print_error(char *str)
 	return (-1);
 }
 
-void	print_pickupfork(t_philo *philo, int flag)
+int	print_pickupfork(t_philo *philo, int flag)
 {
 	unsigned long	pickup_time;
 
 	pickup_time = 0;
 	pickup_time = get_printms(philo->table->start_time);
-	pthread_mutex_lock(&philo->table->print_mutex);
+	if (thread_kill(philo))
+		return (-1);
 	if (flag == 1)
 	{
-		printf("%ld %d has taken a fork\n", \
+		pthread_mutex_lock(&philo->table->print_mutex);
+		if (thread_kill(philo))
+		{
+			pthread_mutex_unlock(&philo->table->print_mutex);
+			return (-1);
+		}
+		printf("%ld %d has taken a left fork\n", \
 			pickup_time, philo->philo_id);
+		pthread_mutex_unlock(&philo->table->print_mutex);
 	}
 	else
 	{
-		printf("%ld %d has taken a fork\n", \
+		pthread_mutex_lock(&philo->table->print_mutex);
+		if (thread_kill(philo))
+		{
+			pthread_mutex_unlock(&philo->table->print_mutex);
+			return (-1);
+		}
+		printf("%ld %d has taken a right fork\n", \
 			pickup_time, philo->philo_id);
+		pthread_mutex_unlock(&philo->table->print_mutex);
 	}
+	if (thread_kill(philo))
+		return (-1);
+	return (0);
+}
+
+int	print_starteat(t_philo *philo)
+{
+	unsigned long	eat_time;
+
+	eat_time = 0;
+	eat_time = get_printms(philo->table->start_time);
+	if (thread_kill(philo))
+		return (-1);
+	pthread_mutex_lock(&philo->table->print_mutex);
+	printf("%ld %d is eating\n", eat_time, philo->philo_id);
 	pthread_mutex_unlock(&philo->table->print_mutex);
+	if (thread_kill(philo))
+		return (-1);
+	return (0);
 }
 
 void	print_table(t_table *table)

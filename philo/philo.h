@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:48 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/03 21:58:28 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/04 17:35:25 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,19 +75,19 @@ int				create_threads(t_table *table);
 int				monitoring(t_table *table);
 int				is_dying(t_table *table, int idx);
 int				is_musteat(t_table *table, int idx, int *alleat_cnt);
-// int				threads_detach(t_table *table);
+int				threads_join(t_table *table);
 int				thread_kill(t_philo *philo);
 void			*philo_task(void *argument);
 int				pickup_forks(t_philo *philo);
-void			print_pickupfork(t_philo *philo, int flag);
 int				check_leftfork(t_philo *philo);
 int				check_rightfork(t_philo *philo);
-int				is_pickup(t_philo *philo);
-void			eating(t_philo *philo);
-void			putdown_forks(t_philo *philo);
-void			sleeping(t_philo *philo);
-void			thinking(t_philo *philo);
+int				eating(t_philo *philo);
+int				putdown_forks(t_philo *philo);
+int				sleeping(t_philo *philo);
+int				thinking(t_philo *philo);
 int				print_error(char *str);
+int				print_pickupfork(t_philo *philo, int flag);
+int				print_starteat(t_philo *philo);
 void			print_table(t_table *table);
 void			print_forks(int cnt, t_fork *forks);
 void			print_philos(int cnt, t_philo *philos);

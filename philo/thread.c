@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/03 22:01:31 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/04 18:44:01 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ int	create_threads(t_table *table)
 		}
 		idx++;
 	}
-	monitoring(table);
-	return (0);
+	result = monitoring(table);
+	threads_join(table);
+	return (result);
 }
 
 int	is_dying(t_table *table, int idx)
@@ -54,7 +55,6 @@ int	is_dying(t_table *table, int idx)
 		pthread_mutex_lock(&table->print_mutex);
 		print_time = get_printms(table->start_time);
 		printf("%ld %d is died\n", print_time, table->is_dying);
-		// pthread_mutex_unlock(&table->print_mutex);
 		return (1);
 	}
 	return (0);
@@ -72,7 +72,6 @@ int	is_musteat(t_table *table, int idx, int *alleat_cnt)
 		{
 			pthread_mutex_lock(&table->table_mutex);
 			table->is_dying = idx + 1;
-			// pthread_mutex_unlock(&table->table_mutex);
 			return (1);
 		}
 	}
@@ -83,33 +82,41 @@ int	is_musteat(t_table *table, int idx, int *alleat_cnt)
 int	monitoring(t_table *table)
 {
 	int	idx;
+	int	result;
 	int	alleat_cnt;
 
 	idx = 0;
+	result = 0;
 	alleat_cnt = 0;
 	while (idx < table->philo_cnt)
 	{
-		// if (is_dying(table, idx))
-		// 	return (-2);
-		// if (is_musteat(table, idx, &alleat_cnt))
-		// 	return (1);
-		is_dying(table, idx);
-		is_musteat(table, idx, &alleat_cnt);
+		if (is_dying(table, idx))
+		{
+			result = -2;
+			break ;
+		}
+		if (is_musteat(table, idx, &alleat_cnt))
+		{
+			result = 1;
+			break ;
+		}
 		idx = (idx + (table->philo_cnt - 1)) % table->philo_cnt;
 		usleep(400);
 	}
-	return (0);
+	return (result);
 }
 
-int	threads_detach(t_table *table)
+int	threads_join(t_table *table)
 {
 	int	idx;
+	int	status;
 
 	idx = 0;
+	status = 0;
 	while (idx < table->philo_cnt)
 	{
-		if (!pthread_detach(table->philos[idx].thread))
-			idx++;
+		pthread_join(table->philos[idx].thread, (void **)&status);
+		idx++;
 	}
 	return (0);
 }

@@ -6,13 +6,13 @@
 #    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/04/03 17:51:51 by yunjcho          ###   ########.fr        #
+#    Updated: 2023/04/04 18:37:22 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g3
+CFLAGS = -Wall -Werror -Wextra -g3 -fsanitize=thread
 SRCS = main.c init.c parsing.c print.c task1.c task2.c thread.c timer.c
 OBJS = $(SRCS:.c=.o)
 DBJS = $(SRCS:.c=.d)
