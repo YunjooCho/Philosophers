@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 17:11:43 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/03 17:12:30 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/03 21:46:24 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <semaphore.h>
+# include <sys/stat.h>
+# include <signal.h>
 
 # define USED 1
 # define NOT_USED 0
@@ -54,7 +57,7 @@ typedef struct s_philo
 	t_fork			*right_fork;
 	t_table			*table;
 	unsigned long	lasteat_time;
-	pthread_t		thread;
+	pid_t			*pid;
 	pthread_mutex_t	philo_mutex;
 	int				checked;
 }	t_philo;
