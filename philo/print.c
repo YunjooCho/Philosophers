@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:57:39 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 14:47:02 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 16:29:47 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,18 @@ int	print_error(char *str)
 	return (-1);
 }
 
-int	print_pickupfork(t_philo *philo, int flag)
+int	print_pickupfork(t_philo *philo)
 {
 	unsigned long	pickup_time;
 
 	pickup_time = 0;
 	if (is_end(philo))
-	{
-		thread_kill(philo, 2);
 		return (-1);
-	}
 	pthread_mutex_lock(&philo->table->print_mutex);
 	pickup_time = get_printms(philo->table->start_time);
 	if (is_end(philo))
 	{
 		pthread_mutex_lock(&philo->table->print_mutex);
-		thread_kill(philo, flag);
 		return (-1);
 	}
 	printf("%ld %d has taken a fork\n", \
@@ -51,16 +47,12 @@ int	print_starteat(t_philo *philo)
 
 	eat_time = 0;
 	if (is_end(philo))
-	{
-		thread_kill(philo, 2);
 		return (-1);
-	}
 	pthread_mutex_lock(&philo->table->print_mutex);
 	eat_time = get_printms(philo->table->start_time);
 	if (is_end(philo))
 	{
 		pthread_mutex_lock(&philo->table->print_mutex);
-		thread_kill(philo, 2);
 		return (-1);
 	}
 	printf("%ld %d is eating\n", eat_time, philo->philo_id);

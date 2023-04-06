@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:20:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 14:28:44 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 16:39:42 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	*philo_task(void *argument)
 		usleep(1000);
 	while (1)
 	{
-		if (is_end(philo))
-			break ;
 		if (pickup_forks(philo) < 0)
 			break ;
 		if (eating(philo) < 0)
@@ -33,6 +31,8 @@ void	*philo_task(void *argument)
 		if (sleeping(philo) < 0)
 			break ;
 		if (thinking(philo) < 0)
+			break ;
+		if (is_end(philo))
 			break ;
 	}
 	return (NULL);
@@ -62,8 +62,11 @@ int	check_leftfork(t_philo *philo)
 			philo->left_fork->used = USED;
 			pthread_mutex_unlock(&philo->table->check_mutex);
 			pthread_mutex_lock(&philo->left_fork->fork_mutex);
-			if (print_pickupfork(philo, 1) < 0)
+			if (print_pickupfork(philo) < 0)
+			{
+				thread_kill(philo, 1);
 				return (-1);
+			}
 			break ;
 		}
 		pthread_mutex_unlock(&philo->table->check_mutex);
@@ -95,10 +98,13 @@ int	check_rightfork(t_philo *philo)
 		else if (!philo->right_fork->used)
 		{
 			philo->right_fork->used = USED;
-			pthread_mutex_lock(&philo->right_fork->fork_mutex);
 			pthread_mutex_unlock(&philo->table->check_mutex);
-			if (print_pickupfork(philo, 2) < 0)
+			pthread_mutex_lock(&philo->right_fork->fork_mutex);
+			if (print_pickupfork(philo) < 0)
+			{
+				thread_kill(philo, 2);
 				return (-1);
+			}
 			break ;
 		}
 		pthread_mutex_unlock(&philo->table->check_mutex);

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 15:30:27 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 15:49:55 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,11 @@ int	monitoring(t_table *table)
 	int				idx;
 	int				result;
 	int				alleat_cnt;
-	unsigned long	print_time;
 
 	idx = 0;
 	result = 0;
 	alleat_cnt = 0;
-	print_time = 0;
-	while (idx < table->philo_cnt)
+	while (1)
 	{
 		if (is_dying(table, idx))
 		{
@@ -66,7 +64,7 @@ int	monitoring(t_table *table)
 	return (result);
 }
 
-unsigned long	is_dying(t_table *table, int idx)
+int	is_dying(t_table *table, int idx)
 {
 	unsigned long	print_time;
 	unsigned long	noteating_time;
@@ -78,16 +76,16 @@ unsigned long	is_dying(t_table *table, int idx)
 	pthread_mutex_unlock(&table->philos[idx].philo_mutex);
 	if (noteating_time > (unsigned long)table->time_to_die)
 	{
+		print_time = get_printms(table->start_time);
 		pthread_mutex_lock(&table->table_mutex);
 		table->is_dying = idx + 1;
-		print_time = get_printms(table->start_time);
 		pthread_mutex_unlock(&table->table_mutex);
 		pthread_mutex_lock(&table->print_mutex);
-		printf("%ld %d is died\n", print_time, idx + 1);
+		printf("%ld %d is died\n", print_time, table->is_dying);
 		pthread_mutex_unlock(&table->print_mutex);
-		return (print_time);
+		return (1);
 	}
-	return (print_time);
+	return (0);
 }
 
 int	is_musteat(t_table *table, int idx, int *alleat_cnt)

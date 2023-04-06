@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 16:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 14:37:43 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 16:38:09 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,8 @@ void	thread_kill(t_philo *philo, int flag)
 		pthread_mutex_lock(&philo->table->check_mutex);
 		philo->left_fork->used = NOT_USED;
 		pthread_mutex_unlock(&philo->left_fork->fork_mutex);
+		pthread_mutex_unlock(&philo->table->check_mutex);
+		pthread_mutex_lock(&philo->table->check_mutex);
 		philo->right_fork->used = NOT_USED;
 		pthread_mutex_unlock(&philo->right_fork->fork_mutex);
 		pthread_mutex_unlock(&philo->table->check_mutex);
