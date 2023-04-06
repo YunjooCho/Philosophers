@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:20:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 16:39:42 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 17:21:02 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,11 @@ int	check_leftfork(t_philo *philo)
 	while (1)
 	{
 		pthread_mutex_lock(&philo->table->check_mutex);
+		if (is_end(philo))
+		{
+			pthread_mutex_unlock(&philo->table->check_mutex);
+			return (-1);
+		}
 		if (!philo->left_fork->used)
 		{
 			philo->left_fork->used = USED;
@@ -97,6 +102,11 @@ int	check_rightfork(t_philo *philo)
 		}
 		else if (!philo->right_fork->used)
 		{
+			if (is_end(philo))
+			{
+				pthread_mutex_unlock(&philo->table->check_mutex);
+				return (-1);
+			}
 			philo->right_fork->used = USED;
 			pthread_mutex_unlock(&philo->table->check_mutex);
 			pthread_mutex_lock(&philo->right_fork->fork_mutex);

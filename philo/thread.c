@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 15:49:55 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 17:22:15 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int	create_threads(t_table *table)
 
 int	monitoring(t_table *table)
 {
-	int				idx;
-	int				result;
-	int				alleat_cnt;
+	int	idx;
+	int	result;
+	int	alleat_cnt;
 
 	idx = 0;
 	result = 0;
@@ -76,9 +76,9 @@ int	is_dying(t_table *table, int idx)
 	pthread_mutex_unlock(&table->philos[idx].philo_mutex);
 	if (noteating_time > (unsigned long)table->time_to_die)
 	{
-		print_time = get_printms(table->start_time);
 		pthread_mutex_lock(&table->table_mutex);
 		table->is_dying = idx + 1;
+		print_time = get_printms(table->start_time);
 		pthread_mutex_unlock(&table->table_mutex);
 		pthread_mutex_lock(&table->print_mutex);
 		printf("%ld %d is died\n", print_time, table->is_dying);
@@ -90,14 +90,24 @@ int	is_dying(t_table *table, int idx)
 
 int	is_musteat(t_table *table, int idx, int *alleat_cnt)
 {
+	if (is_end(&table->philos[idx]))
+		return (-1);
 	pthread_mutex_lock(&table->philos[idx].philo_mutex);
+	if (is_end(&table->philos[idx]))
+	{
+		pthread_mutex_unlock(&table->philos[idx].philo_mutex);
+		return (-1);
+	}
 	if (table->philos[idx].eat_cnt == table->must_eat_cnt \
 		&& !(table->philos[idx].checked))
 	{
 		(*alleat_cnt)++;
 		table->philos[idx].checked = USED;
+		pthread_mutex_unlock(&table->philos[idx].philo_mutex);
 		if (*alleat_cnt == table->philo_cnt)
 		{
+			if (is_end(&table->philos[idx]))
+				return (-1);
 			pthread_mutex_lock(&table->table_mutex);
 			table->is_dying = idx + 1;
 			pthread_mutex_unlock(&table->table_mutex);
