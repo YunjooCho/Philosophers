@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:07:27 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 17:10:59 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 18:27:00 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int ac, char **av)
 	if (init_table(av, &table) == -1)
 		return (print_error("Init table Fail"));
 	flag = create_threads(&table);
+	free_all(&table);
 	if (flag == -1)
 		return (print_error("Create Thread Fail"));
 	else if (flag == -2)

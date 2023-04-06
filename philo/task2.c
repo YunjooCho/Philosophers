@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 16:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 18:05:10 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 20:56:09 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,37 +47,14 @@ int	eating(t_philo *philo)
 
 int	putdown_forks(t_philo *philo)
 {
-	if (is_end(philo))
-	{
-		thread_kill(philo, 2);
-		return (-1);
-	}
 	pthread_mutex_lock(&philo->table->check_mutex);
-	if (is_end(philo))
-	{
-		pthread_mutex_unlock(&philo->table->check_mutex);
-		return (-1);
-	}
-	if (philo->left_fork->used)
-	{
-		philo->left_fork->used = NOT_USED;
-		pthread_mutex_unlock(&philo->left_fork->fork_mutex);
-	}
+	philo->left_fork->used = NOT_USED;
+	philo->right_fork->used = NOT_USED;
 	pthread_mutex_unlock(&philo->table->check_mutex);
+	pthread_mutex_unlock(&philo->left_fork->fork_mutex);
+	pthread_mutex_unlock(&philo->right_fork->fork_mutex);
 	if (is_end(philo))
 		return (-1);
-	pthread_mutex_lock(&philo->table->check_mutex);
-	if (is_end(philo))
-	{
-		pthread_mutex_unlock(&philo->table->check_mutex);
-		return (-1);
-	}
-	if (philo->right_fork->used)
-	{
-		philo->right_fork->used = NOT_USED;
-		pthread_mutex_unlock(&philo->right_fork->fork_mutex);
-	}
-	pthread_mutex_unlock(&philo->table->check_mutex);
 	return (0);
 }
 
@@ -151,18 +128,16 @@ void	thread_kill(t_philo *philo, int flag)
 	{
 		pthread_mutex_lock(&philo->table->check_mutex);
 		philo->left_fork->used = NOT_USED;
-		pthread_mutex_unlock(&philo->left_fork->fork_mutex);
 		pthread_mutex_unlock(&philo->table->check_mutex);
+		pthread_mutex_unlock(&philo->left_fork->fork_mutex);
 	}
 	else
 	{
 		pthread_mutex_lock(&philo->table->check_mutex);
 		philo->left_fork->used = NOT_USED;
-		pthread_mutex_unlock(&philo->table->check_mutex);
-		pthread_mutex_unlock(&philo->left_fork->fork_mutex);
-		pthread_mutex_lock(&philo->table->check_mutex);
 		philo->right_fork->used = NOT_USED;
 		pthread_mutex_unlock(&philo->table->check_mutex);
+		pthread_mutex_unlock(&philo->left_fork->fork_mutex);
 		pthread_mutex_unlock(&philo->right_fork->fork_mutex);
 	}
 }
