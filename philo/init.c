@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:22:55 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/05 00:12:40 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 14:15:25 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int	create_forkmutexs(t_fork *fork)
 		return (result);
 	}
 	fork->used = NOT_USED;
-	fork->fork_user = -1;
 	return (result);
 }
 
@@ -98,7 +97,7 @@ int	init_table(char **av, t_table *table)
 	if (!table->philo_cnt)
 		return (-1);
 	if (pthread_mutex_init(&table->check_mutex, NULL) < 0 || \
-		pthread_mutex_init(&table->check_mutex, NULL) < 0 || \
+		pthread_mutex_init(&table->print_mutex, NULL) < 0 || \
 		pthread_mutex_init(&table->table_mutex, NULL) < 0)
 		return (-1);
 	if (table->time_to_die < 0 || table->time_to_eat < 0 || \

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/04 22:00:41 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 15:30:27 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,36 @@ int	create_threads(t_table *table)
 	return (result);
 }
 
-int	is_dying(t_table *table, int idx)
+int	monitoring(t_table *table)
+{
+	int				idx;
+	int				result;
+	int				alleat_cnt;
+	unsigned long	print_time;
+
+	idx = 0;
+	result = 0;
+	alleat_cnt = 0;
+	print_time = 0;
+	while (idx < table->philo_cnt)
+	{
+		if (is_dying(table, idx))
+		{
+			result = -2;
+			break ;
+		}
+		if (is_musteat(table, idx, &alleat_cnt))
+		{
+			result = 1;
+			break ;
+		}
+		idx = (idx + (table->philo_cnt - 1)) % table->philo_cnt;
+		usleep(400);
+	}
+	return (result);
+}
+
+unsigned long	is_dying(t_table *table, int idx)
 {
 	unsigned long	print_time;
 	unsigned long	noteating_time;
@@ -51,14 +80,14 @@ int	is_dying(t_table *table, int idx)
 	{
 		pthread_mutex_lock(&table->table_mutex);
 		table->is_dying = idx + 1;
-		pthread_mutex_unlock(&table->table_mutex);
 		print_time = get_printms(table->start_time);
+		pthread_mutex_unlock(&table->table_mutex);
 		pthread_mutex_lock(&table->print_mutex);
-		printf("%ld %d is died\n", print_time, table->is_dying);
+		printf("%ld %d is died\n", print_time, idx + 1);
 		pthread_mutex_unlock(&table->print_mutex);
-		return (1);
+		return (print_time);
 	}
-	return (0);
+	return (print_time);
 }
 
 int	is_musteat(t_table *table, int idx, int *alleat_cnt)
@@ -79,33 +108,6 @@ int	is_musteat(t_table *table, int idx, int *alleat_cnt)
 	}
 	pthread_mutex_unlock(&table->philos[idx].philo_mutex);
 	return (0);
-}
-
-int	monitoring(t_table *table)
-{
-	int	idx;
-	int	result;
-	int	alleat_cnt;
-
-	idx = 0;
-	result = 0;
-	alleat_cnt = 0;
-	while (idx < table->philo_cnt)
-	{
-		if (is_dying(table, idx))
-		{
-			result = -2;
-			break ;
-		}
-		if (is_musteat(table, idx, &alleat_cnt))
-		{
-			result = 1;
-			break ;
-		}
-		idx = (idx + (table->philo_cnt - 1)) % table->philo_cnt;
-		usleep(400);
-	}
-	return (result);
 }
 
 int	threads_join(t_table *table)

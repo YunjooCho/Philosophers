@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:48 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/05 00:12:53 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 15:25:07 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct s_fork
 {
 	pthread_mutex_t	fork_mutex;
 	int				used;
-	int				fork_user;
 }	t_fork;
 
 typedef struct s_philo
@@ -73,7 +72,7 @@ unsigned long	get_now(void);
 unsigned long	get_printms(unsigned long start_time);
 int				create_threads(t_table *table);
 int				monitoring(t_table *table);
-int				is_dying(t_table *table, int idx);
+unsigned long	is_dying(t_table *table, int idx);
 int				is_musteat(t_table *table, int idx, int *alleat_cnt);
 int				threads_join(t_table *table);
 int				is_end(t_philo *philo);
@@ -87,8 +86,8 @@ int				putdown_forks(t_philo *philo);
 int				sleeping(t_philo *philo);
 int				thinking(t_philo *philo);
 int				print_error(char *str);
-void			print_pickupfork(t_philo *philo);
-void			print_starteat(t_philo *philo);
+int				print_pickupfork(t_philo *philo, int flag);
+int				print_starteat(t_philo *philo);
 
 void			print_table(t_table *table);
 void			print_forks(int cnt, t_fork *forks);

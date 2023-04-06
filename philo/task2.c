@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 16:37:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/04 22:04:13 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 14:37:43 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,11 @@ int	eating(t_philo *philo)
 
 	eating_time = 0;
 	eatstart_time = get_now();
-	if (is_end(philo))
+	if (is_end(philo) || print_starteat(philo) < 0)
 	{
 		thread_kill(philo, 2);
 		return (-1);
 	}
-	print_starteat(philo);
 	while (1)
 	{
 		if (is_end(philo))
@@ -73,6 +72,8 @@ int	sleeping(t_philo *philo)
 
 	sleeping_time = 0;
 	sleepstart_time = get_now();
+	if (is_end(philo))
+		return (-1);
 	print_time = get_printms(philo->table->start_time);
 	pthread_mutex_lock(&philo->table->print_mutex);
 	if (is_end(philo))
@@ -98,6 +99,8 @@ int	thinking(t_philo *philo)
 {
 	unsigned long	print_time;
 
+	if (is_end(philo))
+		return (-1);
 	print_time = get_printms(philo->table->start_time);
 	pthread_mutex_lock(&philo->table->print_mutex);
 	if (is_end(philo))
