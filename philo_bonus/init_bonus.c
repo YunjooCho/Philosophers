@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:22:55 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 14:16:46 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 20:59:08 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@ int	init_philo(t_philo *philo, t_table *table, int idx)
 	philo->pid = 0;
 	philo->philo_id = idx + 1;
 	philo->eat_cnt = 0;
-	philo->fork_cnt = 0;
+	philo->leftfork_cnt = 0;
+	if (idx == right_idx)
+		philo->rightfork_cnt = -1;
+	else
+		philo->rightfork_cnt = 0;
 	philo->table = table;
 	philo->lasteat_time = table->start_time;
-	if (pthread_mutex_init(&philo->philo_mutex, NULL) < 0)
-		return (-1);
 	philo->checked = NOT_USED;
 	return (0);
 }
@@ -50,23 +52,27 @@ t_philo	*malloc_philosarr(t_table *table)
 
 int	init_table(char **av, t_table *table)
 {
-	const char	*sem_name;
-
-	sem_name = "sem_forks";
 	translate_aton(av, table);
-	if (!table->philo_cnt)
+	if (!table->philo_cnt || table->time_to_die < 0 || \
+		table->time_to_eat < 0 || table->time_to_sleep < 0 \
+		|| table->philo_cnt < 0)
 		return (-1);
-	if (pthread_mutex_init(&table->check_mutex, NULL) < 0 || \
-		pthread_mutex_init(&table->print_mutex, NULL) < 0 || \
-		pthread_mutex_init(&table->table_mutex, NULL) < 0)
-		return (-1);
-	if (table->time_to_die < 0 || table->time_to_eat < 0 || \
-		table->time_to_sleep < 0 || table->philo_cnt < 0)
-		return (-1);
-	sem_unlink(sem_name);
-	table->sem_forks = sem_open(sem_name, O_CREAT | O_EXCL, 0777, table->philo_cnt);
+	table->useable_forkcnt = table->philo_cnt;
+	table->sem_forksname = "sem_forks";
+	table->sem_printname = "sem_print";
+	table->sem_checkname = "sem_check";
+	sem_unlink(table->sem_forksname);
+	sem_unlink(table->sem_printname);
+	sem_unlink(table->sem_checkname);
+	table->sem_forks = sem_open(table->sem_forksname, O_CREAT | O_EXCL, \
+		0777, table->philo_cnt);
+	table->sem_print = sem_open(table->sem_printname, O_CREAT | O_EXCL, \
+		0777, 1);
+	table->sem_check = sem_open(table->sem_checkname, O_CREAT | O_EXCL, \
+		0777, 1);
 	table->philos = malloc_philosarr(table);
-	if (!table->sem_forks || !table->philos)
+	if (!table->sem_forks || !table->sem_print || !table->sem_check \
+		|| !table->philos)
 		return (-1);
 	return (0);
 }

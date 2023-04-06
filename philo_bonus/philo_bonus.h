@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 17:11:43 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/05 05:56:11 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 21:03:50 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,19 @@
 typedef struct s_table
 {
 	int				philo_cnt;
+	int				useable_forkcnt;
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
 	long			must_eat_cnt;
 	unsigned long	start_time;
 	struct s_philo	*philos;
+	const char		*sem_forksname;
+	const char		*sem_printname;
+	const char		*sem_checkname;
 	sem_t			*sem_forks;
-	pthread_mutex_t	check_mutex;
-	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	table_mutex;
+	sem_t			*sem_print;
+	sem_t			*sem_check;
 	int				is_dying;
 }	t_table;
 
@@ -48,10 +51,10 @@ typedef struct s_philo
 	pid_t			pid;
 	int				philo_id;
 	int				eat_cnt;
-	int				fork_cnt;
+	int				leftfork_cnt;
+	int				rightfork_cnt;
 	t_table			*table;
 	unsigned long	lasteat_time;
-	pthread_mutex_t	philo_mutex;
 	int				checked;
 }	t_philo;
 
@@ -65,16 +68,20 @@ t_philo			*malloc_philosarr(t_table *table);
 int				init_philo(t_philo *philo, t_table *table, int idx);
 unsigned long	get_now(void);
 unsigned long	get_printms(unsigned long start_time);
+int				is_end(t_philo *philo);
+void			thread_kill(t_philo *philo, int flag);
 int				create_process(t_table *table);
-void			parent_proc(t_philo *philo, int *pid);
-void			children_proc(t_philo *philo);
+void			philo_task(t_philo *philo);
 int				pickup_forks(t_philo *philo);
+int				check_leftfork(t_philo *philo);
+int				check_rightfork(t_philo *philo);
 int				eating(t_philo *philo);
 int				putdown_forks(t_philo *philo);
 int				sleeping(t_philo *philo);
 int				thinking(t_philo *philo);
-int				is_dying(t_philo *philo);
 int				print_error(char *str);
+int				print_pickupfork(t_philo *philo);
+int				print_starteat(t_philo *philo);
 void			print_table(t_table *table);
 void			print_philos(int cnt, t_philo *philos);
 

@@ -6,14 +6,14 @@
 #    By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 19:16:02 by yunjcho           #+#    #+#              #
-#    Updated: 2023/04/05 03:32:39 by yunjcho          ###   ########.fr        #
+#    Updated: 2023/04/06 21:03:06 by yunjcho          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo_bonus
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g3
-SRCS = main.c init.c parsing.c print.c process.c task.c timer.c
+SRCS = main_bonus.c init_bonus.c parsing_bonus.c print_bonus.c process_bonus.c task1_bonus.c task2_bonus.c timer_bonus.c
 OBJS = $(SRCS:.c=.o)
 DBJS = $(SRCS:.c=.d)
 

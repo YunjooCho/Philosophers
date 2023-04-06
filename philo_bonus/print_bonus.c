@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   print_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:57:39 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/04 23:44:05 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 21:16:11 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,44 @@ int	print_error(char *str)
 	return (-1);
 }
 
-// void	print_pickupfork(t_philo *philo)
-// {
-// 	unsigned long	pickup_time;
+int	print_pickupfork(t_philo *philo)
+{
+	unsigned long	pickup_time;
 
-// 	pickup_time = 0;
-// 	pickup_time = get_printms(philo->table->start_time);
-// 	pthread_mutex_lock(&philo->table->print_mutex);
-// 	printf("%ld %d has taken a fork\n", \
-// 		pickup_time, philo->philo_id);
-// 	pthread_mutex_unlock(&philo->table->print_mutex);
-// }
+	pickup_time = 0;
+	if (is_end(philo))
+		return (-1);
+	sem_wait(philo->table->sem_print);
+	pickup_time = get_printms(philo->table->start_time);
+	if (is_end(philo))
+	{
+		sem_post(philo->table->sem_print);
+		return (-1);
+	}
+	printf("%ld %d has taken a fork\n", \
+		pickup_time, philo->philo_id);
+	sem_post(philo->table->sem_print);
+	return (0);
+}
 
-// void	print_starteat(t_philo *philo)
-// {
-// 	unsigned long	eat_time;
+int	print_starteat(t_philo *philo)
+{
+	unsigned long	eat_time;
 
-// 	eat_time = 0;
-// 	eat_time = get_printms(philo->table->start_time);
-// 	pthread_mutex_lock(&philo->table->print_mutex);
-// 	printf("%ld %d is eating\n", eat_time, philo->philo_id);
-// 	pthread_mutex_unlock(&philo->table->print_mutex);
-// }
+	eat_time = 0;
+	if (is_end(philo))
+		return (-1);
+	sem_wait(philo->table->sem_print);
+	eat_time = get_printms(philo->table->start_time);
+	if (is_end(philo))
+	{
+		sem_post(philo->table->sem_print);
+		return (-1);
+	}
+	printf("%ld %d is eating\n", eat_time, philo->philo_id);
+	sem_post(philo->table->sem_print);
+	return (0);
+}
 
 void	print_table(t_table *table)
 {
@@ -50,7 +66,8 @@ void	print_table(t_table *table)
 		table->philo_cnt, table->time_to_die, table->time_to_eat, \
 		table->time_to_sleep, table->must_eat_cnt, table->start_time, \
 		table->is_dying);
-	printf("philos : %p, sem_forks : %p\n", table->philos, table->sem_forks);
+	printf("sem_forks : %p, sem_print : %p, sem_check : %p\n", table->sem_forks, \
+		table->sem_print, table->sem_check);
 }
 
 void	print_philos(int cnt, t_philo *philos)
@@ -60,10 +77,10 @@ void	print_philos(int cnt, t_philo *philos)
 	idx = 0;
 	while (idx < cnt)
 	{
-		printf("philos[%d] pid: %d, eat_cnt : %d, fork_cnt : %d, \
+		printf("philos[%d] pid: %d, eat_cnt : %d, leftfork_cnt : %d, rightfork_cnt : %d, \
 		last eat time : %ld, table : %p\n", \
-		philos[idx].philo_id, philos[idx].pid, philos[idx].eat_cnt, philos[idx].fork_cnt, \
-		philos[idx].lasteat_time, philos[idx].table);
+		philos[idx].philo_id, philos[idx].pid, philos[idx].eat_cnt, philos[idx].leftfork_cnt, \
+		philos[idx].rightfork_cnt, philos[idx].lasteat_time, philos[idx].table);
 		idx++;
 	}
 }
