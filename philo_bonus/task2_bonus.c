@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 19:19:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 21:01:29 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/08 21:34:52 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	putdown_forks(t_philo *philo)
 	sem_wait(philo->table->sem_check);
 	philo->leftfork_cnt--;
 	philo->rightfork_cnt--;
+	philo->table->useable_forkcnt += 2;
 	sem_post(philo->table->sem_check);
 	sem_post(philo->table->sem_forks);
 	sem_post(philo->table->sem_forks);
@@ -112,13 +113,13 @@ int	is_end(t_philo *philo)
 	int	idx;
 
 	idx = 0;
-	sem_wait(philo->table->sem_print);
+	sem_wait(philo->table->sem_table);
 	if (philo->table->is_dying)
 	{
-		sem_post(philo->table->sem_print);
+		sem_post(philo->table->sem_table);
 		return (1);
 	}
-	sem_post(philo->table->sem_print);
+	sem_post(philo->table->sem_table);
 	return (0);
 }
 
@@ -128,6 +129,7 @@ void	thread_kill(t_philo *philo, int flag)
 	{
 		sem_wait(philo->table->sem_check);
 		philo->leftfork_cnt--;
+		philo->table->useable_forkcnt++;
 		sem_post(philo->table->sem_check);
 		sem_post(philo->table->sem_forks);
 	}
@@ -136,6 +138,7 @@ void	thread_kill(t_philo *philo, int flag)
 		sem_wait(philo->table->sem_check);
 		philo->leftfork_cnt--;
 		philo->rightfork_cnt--;
+		philo->table->useable_forkcnt += 2;
 		sem_post(philo->table->sem_check);
 		sem_post(philo->table->sem_forks);
 		sem_post(philo->table->sem_forks);

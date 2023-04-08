@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:22:55 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 20:59:08 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/08 21:07:43 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,18 @@ int	init_table(char **av, t_table *table)
 	table->sem_forksname = "sem_forks";
 	table->sem_printname = "sem_print";
 	table->sem_checkname = "sem_check";
+	table->sem_tablename = "sem_table";
 	sem_unlink(table->sem_forksname);
 	sem_unlink(table->sem_printname);
 	sem_unlink(table->sem_checkname);
+	sem_unlink(table->sem_tablename);
 	table->sem_forks = sem_open(table->sem_forksname, O_CREAT | O_EXCL, \
 		0777, table->philo_cnt);
 	table->sem_print = sem_open(table->sem_printname, O_CREAT | O_EXCL, \
 		0777, 1);
 	table->sem_check = sem_open(table->sem_checkname, O_CREAT | O_EXCL, \
+		0777, 1);
+	table->sem_table = sem_open(table->sem_tablename, O_CREAT | O_EXCL, \
 		0777, 1);
 	table->philos = malloc_philosarr(table);
 	if (!table->sem_forks || !table->sem_print || !table->sem_check \

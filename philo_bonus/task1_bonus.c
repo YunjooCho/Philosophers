@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 03:12:15 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 21:00:09 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/08 21:27:52 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 int	pickup_forks(t_philo *philo)
 {
-	unsigned long	pickup_time;
-
-	pickup_time = 0;
 	if (check_leftfork(philo) < 0)
 		return (-1);
 	if (check_rightfork(philo) < 0)
@@ -30,22 +27,22 @@ int	check_leftfork(t_philo *philo)
 		return (-1);
 	while (1)
 	{
-		sem_wait(philo->table->sem_check);
+		sem_wait(philo->table->sem_check); //TODO - sem_philo
 		if (is_end(philo))
 		{
-			sem_post(philo->table->sem_check);
+			sem_post(philo->table->sem_check); //TODO - sem_philo
 			return (-1);
 		}
 		if (!philo->table->useable_forkcnt)
 		{
-			sem_post(philo->table->sem_check);
+			sem_post(philo->table->sem_check); //TODO - sem_philo
 			continue ;
 		}
 		if (!philo->leftfork_cnt)
 		{
 			philo->leftfork_cnt++;
 			philo->table->useable_forkcnt--;
-			sem_post(philo->table->sem_check);
+			sem_post(philo->table->sem_check); //TODO - sem_philo
 			sem_wait(philo->table->sem_forks);
 			if (print_pickupfork(philo) < 0)
 			{
