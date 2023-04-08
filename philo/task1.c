@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:20:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 20:04:42 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/08 19:00:48 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*philo_task(void *argument)
 	philo = NULL;
 	philo = (t_philo *)argument;
 	if (philo->philo_id % 2 == 0)
-		usleep(1000);
+		usleep(philo->table->time_to_die / 2);
 	while (1)
 	{
 		if (pickup_forks(philo) < 0)
@@ -40,9 +40,6 @@ void	*philo_task(void *argument)
 
 int	pickup_forks(t_philo *philo)
 {
-	unsigned long	pickup_time;
-
-	pickup_time = 0;
 	if (check_leftfork(philo) < 0)
 		return (-1);
 	if (check_rightfork(philo) < 0)
