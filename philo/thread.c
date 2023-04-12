@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/12 22:03:04 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/13 02:45:16 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	create_threads(t_table *table)
 	table->start_time = get_now();
 	while (idx < table->philo_cnt)
 	{
+		table->philos[idx].lasteat_time = table->start_time;
 		if (pthread_create(&table->philos[idx].thread, NULL, philo_task, \
 		(void *)&table->philos[idx]) == -1)
 		{
@@ -120,13 +121,11 @@ int	is_musteat(t_table *table, int idx, int *alleat_cnt)
 int	threads_join(t_table *table)
 {
 	int	idx;
-	int	status;
 
 	idx = 0;
-	status = 0;
 	while (idx < table->philo_cnt)
 	{
-		pthread_join(table->philos[idx].thread, (void **)&status);
+		pthread_join(table->philos[idx].thread, NULL);
 		idx++;
 	}
 	return (0);

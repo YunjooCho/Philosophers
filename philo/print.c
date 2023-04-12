@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:57:39 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 18:04:47 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/13 03:34:32 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,42 +21,32 @@ int	print_error(char *str)
 	return (-1);
 }
 
-int	print_pickupfork(t_philo *philo)
+int	print_start(t_philo *philo, int flag)
 {
-	unsigned long	pickup_time;
+	unsigned long	print_time;
 
-	pickup_time = 0;
+	print_time = 0;
 	if (is_end(philo))
 		return (-1);
 	pthread_mutex_lock(&philo->table->print_mutex);
-	pickup_time = get_printms(philo->table->start_time);
+	print_time = get_printms(philo->table->start_time);
 	if (is_end(philo))
 	{
 		pthread_mutex_lock(&philo->table->print_mutex);
 		return (-1);
 	}
-	printf("%ld %d has taken a fork\n", \
-		pickup_time, philo->philo_id);
+	if (flag == TAKEFORKS)
+		printf("%ld %d has taken a fork\n", \
+			print_time, philo->philo_id);
+	else if (flag == EATING)
+		printf("%ld %d is eating\n", print_time, philo->philo_id);
+	else if (flag == SLEEPING)
+		printf("%ld %d is sleeping\n", print_time, philo->philo_id);
+	else
+		printf("%ld %d is thinking\n", print_time, philo->philo_id);
 	pthread_mutex_unlock(&philo->table->print_mutex);
-	return (0);
-}
-
-int	print_starteat(t_philo *philo)
-{
-	unsigned long	eat_time;
-
-	eat_time = 0;
 	if (is_end(philo))
 		return (-1);
-	pthread_mutex_lock(&philo->table->print_mutex);
-	eat_time = get_printms(philo->table->start_time);
-	if (is_end(philo))
-	{
-		pthread_mutex_lock(&philo->table->print_mutex);
-		return (-1);
-	}
-	printf("%ld %d is eating\n", eat_time, philo->philo_id);
-	pthread_mutex_unlock(&philo->table->print_mutex);
 	return (0);
 }
 
@@ -93,8 +83,51 @@ void	print_forks(int cnt, t_fork *forks)
 	idx = 0;
 	while (idx < cnt)
 	{
-		printf("forks[%d] used : %d\n", \
-		idx + 1, forks[idx].used);
+		printf("forks[%d] %p used : %d\n", \
+		idx + 1, &forks[idx], forks[idx].used);
 		idx++;
 	}
 }
+
+// int	print_pickupfork(t_philo *philo)
+// {
+// 	unsigned long	pickup_time;
+
+// 	pickup_time = 0;
+// 	if (is_end(philo))
+// 		return (-1);
+// 	pthread_mutex_lock(&philo->table->print_mutex);
+// 	if (is_end(philo))
+// 	{
+// 		pthread_mutex_lock(&philo->table->print_mutex);
+// 		return (-1);
+// 	}
+// 	pickup_time = get_printms(philo->table->start_time);
+// 	printf("%ld %d has taken a fork\n", \
+// 		pickup_time, philo->philo_id);
+// 	pthread_mutex_unlock(&philo->table->print_mutex);
+// 	if (is_end(philo))
+// 		return (-1);
+// 	return (0);
+// }
+
+// int	print_starteat(t_philo *philo)
+// {
+// 	unsigned long	eat_time;
+
+// 	eat_time = 0;
+// 	if (is_end(philo))
+// 		return (-1);
+// 	pthread_mutex_lock(&philo->table->print_mutex);
+// 	eat_time = get_printms(philo->table->start_time);
+// 	if (is_end(philo))
+// 	{
+// 		pthread_mutex_lock(&philo->table->print_mutex);
+// 		return (-1);
+// 	}
+// 	printf("%ld %d is eating\n", eat_time, philo->philo_id);
+// 	pthread_mutex_unlock(&philo->table->print_mutex);
+// 	if (is_end(philo))
+// 		return (-1);
+// 	return (0);
+// }
