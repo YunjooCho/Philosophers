@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/12 22:03:04 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 17:22:15 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	create_threads(t_table *table)
 	table->start_time = get_now();
 	while (idx < table->philo_cnt)
 	{
+		table->philos[idx].lasteat_time = table->start_time;
 		if (pthread_create(&table->philos[idx].thread, NULL, philo_task, \
 		(void *)&table->philos[idx]) == -1)
 		{

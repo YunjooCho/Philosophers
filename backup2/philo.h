@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:48 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/12 21:49:04 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/06 18:31:46 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,40 @@ typedef struct s_philo
 	int				checked;
 }	t_philo;
 
-int		is_digit(int c);
-int		is_plus_minus(char *str, int idx);
-int		check_operators(char *str, int idx);
-int		ph_atoi(char *str);
-void	translate_aton(char **av, t_table *table);
-int		init_table(char **av, t_table *table);
-t_fork	*malloc_forksarr(int forks_cnt);
-int		create_forkmutexs(t_fork *fork);
-t_philo	*malloc_philosarr(t_table *table);
-int		init_philo(t_philo *philo, t_table *table, int idx);
-t_philo	*malloc_philosarr(t_table *table);
-int		init_philo(t_philo *philo, t_table *table, int idx);
-int		create_threads(t_table *table);
-int		monitoring(t_table *table);
-int		is_dying(t_table *table, int idx);
-int		is_musteat(t_table *table, int idx, int *alleat_cnt);
+int				init_table(char **av, t_table *table);
+int				is_digit(int c);
+int				is_plus_minus(char *str, int idx);
+int				check_operators(char *str, int idx);
+int				ph_atoi(char *str);
+void			translate_aton(char **av, t_table *table);
+t_philo			*malloc_philosarr(t_table *table);
+int				init_philo(t_philo *philo, t_table *table, int idx);
+t_fork			*malloc_forksarr(int forks_cnt);
+int				create_forkmutexs(t_fork *fork);
+unsigned long	get_now(void);
+unsigned long	get_printms(unsigned long start_time);
+int				create_threads(t_table *table);
+int				monitoring(t_table *table);
+int				is_dying(t_table *table, int idx);
+int				is_musteat(t_table *table, int idx, int *alleat_cnt);
+int				threads_join(t_table *table);
+int				is_end(t_philo *philo);
+void			thread_kill(t_philo *philo, int flag);
+void			*philo_task(void *argument);
+int				pickup_forks(t_philo *philo);
+int				check_leftfork(t_philo *philo);
+int				check_rightfork(t_philo *philo);
+int				eating(t_philo *philo);
+int				putdown_forks(t_philo *philo);
+int				sleeping(t_philo *philo);
+int				thinking(t_philo *philo);
+int				print_error(char *str);
+int				print_pickupfork(t_philo *philo);
+int				print_starteat(t_philo *philo);
+void			free_all(t_table *table);
+
+void			print_table(t_table *table);
+void			print_forks(int cnt, t_fork *forks);
+void			print_philos(int cnt, t_philo *philos);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:20:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/12 22:06:12 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/12 21:36:19 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ void	*philo_task(void *argument)
 
 	philo = NULL;
 	philo = (t_philo *)argument;
-	pthread_mutex_lock(&philo->philo_mutex);
-	philo->lasteat_time = philo->table->start_time;
-	pthread_mutex_unlock(&philo->philo_mutex);
 	if (philo->philo_id % 2 == 0)
 		usleep(1000);
 	while (1)
@@ -29,7 +26,8 @@ void	*philo_task(void *argument)
 			break ;
 		if (eating(philo) < 0)
 			break ;
-		putdown_forks(philo);
+		if (putdown_forks(philo) < 0)
+			break ;
 		if (sleeping(philo) < 0)
 			break ;
 		if (thinking(philo) < 0)
