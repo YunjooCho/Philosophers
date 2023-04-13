@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 19:06:40 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/13 13:01:58 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/13 14:56:54 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	counting_time(t_philo *philo, int flag)
 	t1 = get_now();
 	t2 = get_now();
 	target_time = 0;
+	if (is_end(philo))
+		return (-1);
 	if (flag == EATING)
 		target_time = (unsigned long)philo->table->time_to_eat;
 	else if (flag == SLEEPING)

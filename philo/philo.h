@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:48 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/13 12:59:43 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/13 15:27:18 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,8 @@ int				thinking(t_philo *philo);
 int				print_error(char *str);
 int				print_start(t_philo *philo, int flag);
 void			free_all(t_table *table);
+void			print_table(t_table *table);
+void			print_philos(int cnt, t_philo *philos);
+void			print_philos(int cnt, t_philo *philos);
 
 #endif

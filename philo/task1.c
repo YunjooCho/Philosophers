@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:20:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/13 13:04:26 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/13 15:00:44 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*philo_task(void *argument)
 
 	philo = NULL;
 	philo = (t_philo *)argument;
-	if (philo->philo_id % 2)
+	if (philo->philo_id % 2 == 0)
 		ft_usleep(philo->table->time_to_eat / 2);
 	while (1)
 	{
@@ -44,13 +44,18 @@ int	pickup_forks(t_philo *philo)
 		return (-1);
 	if (check_leftfork(philo) < 0)
 		return (-1);
-	if (is_end(philo))
+	if (print_start(philo, TAKEFORKS) < 0)
 	{
 		thread_kill(philo, 1);
 		return (-1);
 	}
 	if (check_rightfork(philo) < 0)
 		return (-1);
+	if (print_start(philo, TAKEFORKS) < 0)
+	{
+		thread_kill(philo, 2);
+		return (-1);
+	}
 	return (0);
 }
 
@@ -71,12 +76,7 @@ int	check_leftfork(t_philo *philo)
 			philo->left_fork->used = USED;
 			pthread_mutex_unlock(&philo->table->check_mutex);
 			pthread_mutex_lock(&philo->left_fork->fork_mutex);
-			if (print_start(philo, TAKEFORKS) < 0)
-			{
-				thread_kill(philo, 1);
-				return (-1);
-			}
-			break ;
+			return (0);
 		}
 		pthread_mutex_unlock(&philo->table->check_mutex);
 		usleep(100);
@@ -104,12 +104,7 @@ int	check_rightfork(t_philo *philo)
 			philo->right_fork->used = USED;
 			pthread_mutex_unlock(&philo->table->check_mutex);
 			pthread_mutex_lock(&philo->right_fork->fork_mutex);
-			if (print_start(philo, TAKEFORKS) < 0)
-			{
-				thread_kill(philo, 2);
-				return (-1);
-			}
-			break ;
+			return (0);
 		}
 		pthread_mutex_unlock(&philo->table->check_mutex);
 		usleep(100);

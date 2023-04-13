@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:44:45 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/13 03:43:38 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/13 15:21:50 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,14 @@ int	monitoring(t_table *table)
 			result = -2;
 			break ;
 		}
-		if (is_musteat(table, idx, &alleat_cnt))
+		if (table->must_eat_cnt > 0)
 		{
-			result = 1;
-			break ;
+			result = is_musteat(table, idx, &alleat_cnt);
+			if (result == -2 || result == 1)
+				break ;
 		}
 		idx = (idx + (table->philo_cnt - 1)) % table->philo_cnt;
-		usleep(400);
+		usleep(50);
 	}
 	return (result);
 }
@@ -76,27 +77,26 @@ int	is_dying(t_table *table, int idx)
 	pthread_mutex_unlock(&table->philos[idx].philo_mutex);
 	if (noteating_time > (unsigned long)table->time_to_die)
 	{
+		print_time = get_printms(table->start_time);
+		pthread_mutex_lock(&table->print_mutex);
+		printf("%ld %d is died\n", print_time, idx + 1);
+		pthread_mutex_unlock(&table->print_mutex);
 		pthread_mutex_lock(&table->table_mutex);
 		table->is_dying = idx + 1;
-		print_time = get_printms(table->start_time);
 		pthread_mutex_unlock(&table->table_mutex);
-		pthread_mutex_lock(&table->print_mutex);
-		printf("%ld %d is died\n", print_time, table->is_dying);
-		pthread_mutex_unlock(&table->print_mutex);
 		return (1);
 	}
+	pthread_mutex_unlock(&table->philos[idx].philo_mutex);
 	return (0);
 }
 
 int	is_musteat(t_table *table, int idx, int *alleat_cnt)
 {
-	if (is_end(&table->philos[idx]))
-		return (-1);
 	pthread_mutex_lock(&table->philos[idx].philo_mutex);
 	if (is_end(&table->philos[idx]))
 	{
 		pthread_mutex_unlock(&table->philos[idx].philo_mutex);
-		return (-1);
+		return (-2);
 	}
 	if (table->philos[idx].eat_cnt == table->must_eat_cnt \
 		&& !(table->philos[idx].checked))
@@ -107,7 +107,7 @@ int	is_musteat(t_table *table, int idx, int *alleat_cnt)
 		if (*alleat_cnt == table->philo_cnt)
 		{
 			if (is_end(&table->philos[idx]))
-				return (-1);
+				return (-2);
 			pthread_mutex_lock(&table->table_mutex);
 			table->is_dying = idx + 1;
 			pthread_mutex_unlock(&table->table_mutex);
