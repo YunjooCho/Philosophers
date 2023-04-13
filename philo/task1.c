@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:20:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/13 13:00:14 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/13 13:04:26 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	*philo_task(void *argument)
 
 int	pickup_forks(t_philo *philo)
 {
+	if (is_end(philo))
+		return (-1);
 	if (check_leftfork(philo) < 0)
 		return (-1);
 	if (is_end(philo))
