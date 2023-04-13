@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:57:39 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/13 03:34:32 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/13 12:58:24 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	print_start(t_philo *philo, int flag)
 	print_time = get_printms(philo->table->start_time);
 	if (is_end(philo))
 	{
-		pthread_mutex_lock(&philo->table->print_mutex);
+		pthread_mutex_unlock(&philo->table->print_mutex);
 		return (-1);
 	}
 	if (flag == TAKEFORKS)
@@ -88,46 +88,3 @@ void	print_forks(int cnt, t_fork *forks)
 		idx++;
 	}
 }
-
-// int	print_pickupfork(t_philo *philo)
-// {
-// 	unsigned long	pickup_time;
-
-// 	pickup_time = 0;
-// 	if (is_end(philo))
-// 		return (-1);
-// 	pthread_mutex_lock(&philo->table->print_mutex);
-// 	if (is_end(philo))
-// 	{
-// 		pthread_mutex_lock(&philo->table->print_mutex);
-// 		return (-1);
-// 	}
-// 	pickup_time = get_printms(philo->table->start_time);
-// 	printf("%ld %d has taken a fork\n", \
-// 		pickup_time, philo->philo_id);
-// 	pthread_mutex_unlock(&philo->table->print_mutex);
-// 	if (is_end(philo))
-// 		return (-1);
-// 	return (0);
-// }
-
-// int	print_starteat(t_philo *philo)
-// {
-// 	unsigned long	eat_time;
-
-// 	eat_time = 0;
-// 	if (is_end(philo))
-// 		return (-1);
-// 	pthread_mutex_lock(&philo->table->print_mutex);
-// 	eat_time = get_printms(philo->table->start_time);
-// 	if (is_end(philo))
-// 	{
-// 		pthread_mutex_lock(&philo->table->print_mutex);
-// 		return (-1);
-// 	}
-// 	printf("%ld %d is eating\n", eat_time, philo->philo_id);
-// 	pthread_mutex_unlock(&philo->table->print_mutex);
-// 	if (is_end(philo))
-// 		return (-1);
-// 	return (0);
-// }

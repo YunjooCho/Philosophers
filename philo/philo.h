@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 21:08:48 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/13 03:14:16 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/13 12:59:43 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_fork			*malloc_forksarr(int forks_cnt);
 int				create_forkmutexs(t_fork *fork);
 unsigned long	get_now(void);
 unsigned long	get_printms(unsigned long start_time);
-void			ft_usleep(unsigned long	target_time);
+void			ft_usleep(unsigned long target_time);
 int				counting_time(t_philo *philo, int flag);
 int				create_threads(t_table *table);
 int				monitoring(t_table *table);
@@ -95,10 +95,5 @@ int				thinking(t_philo *philo);
 int				print_error(char *str);
 int				print_start(t_philo *philo, int flag);
 void			free_all(t_table *table);
-
-void			print_table(t_table *table);
-void			print_forks(int cnt, t_fork *forks);
-void			print_philos(int cnt, t_philo *philos);
-
 
 #endif

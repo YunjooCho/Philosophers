@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 19:06:40 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/13 02:25:45 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/13 13:01:58 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ unsigned long	get_printms(unsigned long start_time)
 	return (diff_time);
 }
 
-void	ft_usleep(unsigned long	target_time)
+void	ft_usleep(unsigned long target_time)
 {
 	unsigned long	t1;
 	unsigned long	t2;
-	
+
 	t1 = get_now();
 	t2 = get_now();
 	while (t1 - t2 + 1 <= target_time)

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:20:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/13 10:18:03 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/04/13 13:00:14 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@ void	*philo_task(void *argument)
 		ft_usleep(philo->table->time_to_eat / 2);
 	while (1)
 	{
-		// unsigned long print_time = get_printms(philo->table->start_time);
-		// pthread_mutex_lock(&philo->table->print_mutex);
-		// printf("-------%ld %d Start-------------------\n", print_time, philo->philo_id);
-		// pthread_mutex_unlock(&philo->table->print_mutex);
 		if (pickup_forks(philo) < 0)
 			break ;
 		if (eating(philo) < 0)
