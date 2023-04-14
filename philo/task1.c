@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 20:20:59 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/13 15:00:44 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/14 18:16:10 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	*philo_task(void *argument)
 {
 	t_philo	*philo;
 
-	philo = NULL;
 	philo = (t_philo *)argument;
 	if (philo->philo_id % 2 == 0)
 		ft_usleep(philo->table->time_to_eat / 2);

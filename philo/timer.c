@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 19:06:40 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/13 14:56:54 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/04/14 18:14:58 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_usleep(unsigned long target_time)
 	unsigned long	t2;
 
 	t1 = get_now();
-	t2 = get_now();
+	t2 = t1;
 	while (t1 - t2 + 1 <= target_time)
 	{
 		usleep(100);
@@ -54,7 +54,7 @@ int	counting_time(t_philo *philo, int flag)
 	unsigned long	target_time;
 
 	t1 = get_now();
-	t2 = get_now();
+	t2 = t1;
 	target_time = 0;
 	if (is_end(philo))
 		return (-1);
