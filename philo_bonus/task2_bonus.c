@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 19:19:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/08 21:34:52 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/12 20:52:28 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,10 @@ int	is_end(t_philo *philo)
 	if (philo->table->is_dying)
 	{
 		sem_post(philo->table->sem_table);
-		return (1);
+		exit(1);
 	}
 	sem_post(philo->table->sem_table);
-	return (0);
+	exit(0);
 }
 
 void	thread_kill(t_philo *philo, int flag)

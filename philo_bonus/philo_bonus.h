@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 17:11:43 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/08 21:25:37 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/12 20:58:54 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int				create_process(t_table *table);
 int				monitoring(t_table *table);
 int				is_dying(t_table *table, int idx);
 int				is_musteat(t_table *table, int idx, int *alleat_cnt);
-void			wait_processes(int len);
+void			wait_processes(t_table *table);
 void			philo_task(t_philo *philo);
 int				pickup_forks(t_philo *philo);
 int				check_leftfork(t_philo *philo);
