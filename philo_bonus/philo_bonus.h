@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 17:11:43 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/12 20:58:54 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/13 19:42:17 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,19 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <pthread.h>
 # include <sys/time.h>
-# include <semaphore.h>
 # include <sys/stat.h>
+# include <semaphore.h>
 # include <signal.h>
 
 # define USED 1
 # define NOT_USED 0
 # define FORK_CNT 2
+
+# define TAKEFORKS 1
+# define EATING 2
+# define SLEEPING 3
+# define THINKING 4
 
 typedef struct s_table
 {
@@ -40,12 +44,9 @@ typedef struct s_table
 	const char		*sem_forksname;
 	const char		*sem_checkname;
 	const char		*sem_printname;
-	const char		*sem_tablename;
 	sem_t			*sem_forks;
 	sem_t			*sem_check;
 	sem_t			*sem_print;
-	sem_t			*sem_table;
-	int				is_dying;
 }	t_table;
 
 typedef struct s_philo
@@ -58,6 +59,7 @@ typedef struct s_philo
 	t_table			*table;
 	unsigned long	lasteat_time;
 	int				checked;
+	int				is_dying;
 }	t_philo;
 
 int				init_table(char **av, t_table *table);
@@ -70,12 +72,9 @@ t_philo			*malloc_philosarr(t_table *table);
 int				init_philo(t_philo *philo, t_table *table, int idx);
 unsigned long	get_now(void);
 unsigned long	get_printms(unsigned long start_time);
-int				is_end(t_philo *philo);
-void			thread_kill(t_philo *philo, int flag);
+int				is_dying(t_philo *philo);
+void			thread_kill(t_philo *philo);
 int				create_process(t_table *table);
-int				monitoring(t_table *table);
-int				is_dying(t_table *table, int idx);
-int				is_musteat(t_table *table, int idx, int *alleat_cnt);
 void			wait_processes(t_table *table);
 void			philo_task(t_philo *philo);
 int				pickup_forks(t_philo *philo);

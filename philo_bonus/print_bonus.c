@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:57:39 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/06 21:16:11 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/13 19:17:13 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,18 @@ int	print_pickupfork(t_philo *philo)
 	unsigned long	pickup_time;
 
 	pickup_time = 0;
-	if (is_end(philo))
-		return (-1);
+	if (is_dying(philo))
+	{
+		thread_kill(philo);
+		exit(1);
+	}
 	sem_wait(philo->table->sem_print);
 	pickup_time = get_printms(philo->table->start_time);
-	if (is_end(philo))
+	if (is_dying(philo))
 	{
 		sem_post(philo->table->sem_print);
-		return (-1);
+		thread_kill(philo);
+		exit(1);
 	}
 	printf("%ld %d has taken a fork\n", \
 		pickup_time, philo->philo_id);
@@ -46,14 +50,18 @@ int	print_starteat(t_philo *philo)
 	unsigned long	eat_time;
 
 	eat_time = 0;
-	if (is_end(philo))
-		return (-1);
+	if (is_dying(philo))
+	{
+		thread_kill(philo);
+		exit(1);
+	}
 	sem_wait(philo->table->sem_print);
 	eat_time = get_printms(philo->table->start_time);
-	if (is_end(philo))
+	if (is_dying(philo))
 	{
 		sem_post(philo->table->sem_print);
-		return (-1);
+		thread_kill(philo);
+		exit(1);
 	}
 	printf("%ld %d is eating\n", eat_time, philo->philo_id);
 	sem_post(philo->table->sem_print);
@@ -62,10 +70,15 @@ int	print_starteat(t_philo *philo)
 
 void	print_table(t_table *table)
 {
-	printf("table philo_cnt : %d, time_to_die : %ld, time_to_eat : %ld, time_sleep_time : %ld, must_eat_cnt : %ld, start_time : %ld, is_dying : %d\n", \
+	// printf("table philo_cnt : %d, time_to_die : %ld, time_to_eat : %ld, time_sleep_time : %ld, must_eat_cnt : %ld, start_time : %ld, is_dying : %d\n", \
+	// 	table->philo_cnt, table->time_to_die, table->time_to_eat, \
+	// 	table->time_to_sleep, table->must_eat_cnt, table->start_time, \
+	// 	table->is_dying);
+	// printf("sem_forks : %p, sem_print : %p, sem_check : %p\n", table->sem_forks, \
+	// 	table->sem_print, table->sem_check);
+	printf("table philo_cnt : %d, time_to_die : %ld, time_to_eat : %ld, time_sleep_time : %ld, must_eat_cnt : %ld, start_time : %ld\n", \
 		table->philo_cnt, table->time_to_die, table->time_to_eat, \
-		table->time_to_sleep, table->must_eat_cnt, table->start_time, \
-		table->is_dying);
+		table->time_to_sleep, table->must_eat_cnt, table->start_time);
 	printf("sem_forks : %p, sem_print : %p, sem_check : %p\n", table->sem_forks, \
 		table->sem_print, table->sem_check);
 }
