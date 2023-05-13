@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 18:23:15 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/04/14 19:03:57 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/13 16:08:48 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	free_all(t_table *table)
 	idx = 0;
 	while (idx < table->philo_cnt)
 	{
-		//philo 뮤텍스 lock/unlock
 		pthread_mutex_unlock(&table->forks[idx].fork_mutex);
 		pthread_mutex_unlock(&table->philos[idx].philo_mutex);
 		idx++;
