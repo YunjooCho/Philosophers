@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 03:12:15 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/13 20:33:20 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/25 19:01:30 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@ void	pickup_forks(t_philo *philo)
 
 void	check_leftfork(t_philo *philo)
 {
+	sem_wait(philo->table->sem_check); //TODO - sem_philo
 	if (is_dying(philo))
 	{
+		sem_post(philo->table->sem_check); //TODO - sem_philo
 		thread_kill(philo);
 		exit(1);
 	}
-	printf("hi\n");
+	sem_post(philo->table->sem_check); //TODO - sem_philo
 	while (1)
 	{
 		sem_wait(philo->table->sem_check); //TODO - sem_philo
@@ -53,26 +55,30 @@ void	check_leftfork(t_philo *philo)
 			}
 			break ;
 		}
-		sem_post(philo->table->sem_check);
+		sem_post(philo->table->sem_check); //TODO - sem_philo
 		usleep(400);
 	}
 }
 
 int	check_rightfork(t_philo *philo)
 {
+	sem_wait(philo->table->sem_check); //TODO - sem_philo
 	if (is_dying(philo))
 	{
+		sem_post(philo->table->sem_check); //TODO - sem_philo
 		thread_kill(philo);
 		return (-1);
 	}
+	sem_post(philo->table->sem_check); //TODO - sem_philo
 	while (1)
 	{
+		sem_wait(philo->table->sem_check); //TODO - sem_philo
 		if (is_dying(philo))
 		{
+			sem_post(philo->table->sem_check); //TODO - sem_philo
 			thread_kill(philo);
 			return (-1);
 		}
-		sem_wait(philo->table->sem_check);
 		if (philo->rightfork_cnt == -1)
 		{
 			sem_post(philo->table->sem_check);
@@ -82,8 +88,8 @@ int	check_rightfork(t_philo *philo)
 		{
 			if (is_dying(philo))
 			{
+				sem_post(philo->table->sem_check); //TODO - sem_philo
 				thread_kill(philo);
-				sem_post(philo->table->sem_check);
 				return (-1);
 			}
 			philo->rightfork_cnt++;

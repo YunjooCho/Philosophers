@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 17:11:43 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/13 19:42:17 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/25 18:42:04 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ void			thread_kill(t_philo *philo);
 int				create_process(t_table *table);
 void			wait_processes(t_table *table);
 void			philo_task(t_philo *philo);
-int				pickup_forks(t_philo *philo);
-int				check_leftfork(t_philo *philo);
+void			pickup_forks(t_philo *philo);
+void			check_leftfork(t_philo *philo);
 int				check_rightfork(t_philo *philo);
 int				eating(t_philo *philo);
 int				putdown_forks(t_philo *philo);

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 19:19:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/13 19:52:46 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/25 19:11:23 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,14 @@ int	eating(t_philo *philo)
 	}
 	while (1)
 	{
+		sem_wait(philo->table->sem_check); //TODO - sem_philo
 		if (is_dying(philo))
 		{
+			sem_post(philo->table->sem_check); //TODO - sem_philo
 			thread_kill(philo);
 			exit(1);
 		}
+		sem_post(philo->table->sem_check); //TODO - sem_philo
 		eating_time = get_printms(eatstart_time);
 		if (eating_time >= (unsigned long)philo->table->time_to_eat)
 		{
@@ -67,21 +70,32 @@ int	sleeping(t_philo *philo)
 
 	sleeping_time = 0;
 	sleepstart_time = get_now();
-	if (is_dying(philo))
-		exit(1);
-	sem_wait(philo->table->sem_print);
-	print_time = get_printms(philo->table->start_time);
+	sem_wait(philo->table->sem_check); //TODO - sem_philo
 	if (is_dying(philo))
 	{
-		sem_post(philo->table->sem_print);
 		exit(1);
 	}
+	sem_post(philo->table->sem_check); //TODO - sem_philo
+	print_time = get_printms(philo->table->start_time);
+	sem_wait(philo->table->sem_check); //TODO - sem_philo
+	if (is_dying(philo))
+	{
+		sem_post(philo->table->sem_check); //TODO - sem_philo
+		exit(1);
+	}
+	sem_post(philo->table->sem_check); //TODO - sem_philo
+	sem_wait(philo->table->sem_print);
 	printf("%ld %d is sleeping\n", print_time, philo->philo_id);
 	sem_post(philo->table->sem_print);
 	while (1)
 	{
+		sem_wait(philo->table->sem_check); //TODO - sem_philo
 		if (is_dying(philo))
+		{
+			sem_post(philo->table->sem_check); //TODO - sem_philo
 			exit(1);
+		}
+		sem_post(philo->table->sem_check); //TODO - sem_philo
 		sleeping_time = get_printms(sleepstart_time);
 		if (sleeping_time >= (unsigned long)philo->table->time_to_sleep)
 			break ;
@@ -94,15 +108,22 @@ int	thinking(t_philo *philo)
 {
 	unsigned long	print_time;
 
-	if (is_dying(philo))
-		exit(1);
-	sem_wait(philo->table->sem_print);
-	print_time = get_printms(philo->table->start_time);
+	sem_wait(philo->table->sem_check); //TODO - sem_philo
 	if (is_dying(philo))
 	{
-		sem_post(philo->table->sem_print);
+		sem_post(philo->table->sem_check); //TODO - sem_philo
 		exit(1);
 	}
+	sem_post(philo->table->sem_check); //TODO - sem_philo
+	print_time = get_printms(philo->table->start_time);
+	sem_wait(philo->table->sem_check); //TODO - sem_philo
+	if (is_dying(philo))
+	{
+		sem_post(philo->table->sem_check); //TODO - sem_philo
+		exit(1);
+	}
+	sem_post(philo->table->sem_check); //TODO - sem_philo
+	sem_wait(philo->table->sem_print);
 	printf("%ld %d is thinking\n", print_time, philo->philo_id);
 	sem_post(philo->table->sem_print);
 	return (0);
@@ -115,9 +136,7 @@ int	is_dying(t_philo *philo)
 
 	print_time = 0;
 	noeating_time = 0;
-	sem_wait(philo->table->sem_check);
 	noeating_time = get_printms(philo->lasteat_time);
-	sem_post(philo->table->sem_check);
 	if (noeating_time > (unsigned long)philo->table->time_to_die)
 	{
 		print_time = get_printms(philo->table->start_time);
