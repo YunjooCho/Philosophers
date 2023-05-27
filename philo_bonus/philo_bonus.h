@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 17:11:43 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/27 19:32:13 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/27 20:27:44 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,11 @@ unsigned long	get_printms(unsigned long start_time);
 void			ft_usleep(unsigned long target_time);
 int				counting_time(t_philo *philo, int flag);
 int				is_dying(t_philo *philo);
+int				check_eatcnt(t_philo *philo);
 void			thread_kill(t_philo *philo);
 int				create_process(t_table *table);
 void			wait_processes(t_table *table);
+void			kill_allprocesses(t_table *table);
 void			philo_task(t_philo *philo);
 void			pickup_forks(t_philo *philo);
 void			check_leftfork(t_philo *philo);
@@ -88,6 +90,7 @@ int				sleeping(t_philo *philo);
 int				thinking(t_philo *philo);
 int				print_error(char *str);
 int				print_start(t_philo *philo, int flag);
+void			free_all(t_table *table);
 void			print_table(t_table *table);
 void			print_philos(int cnt, t_philo *philos);
 

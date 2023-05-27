@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 19:19:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/27 19:47:47 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/27 20:26:39 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	putdown_forks(t_philo *philo)
 	sem_post(philo->table->sem_forks);
 	sem_post(philo->table->sem_forks);
 	sem_wait(philo->table->sem_check);
-	if (is_dying(philo))
+	if (is_dying(philo) || check_eatcnt(philo))
 	{
 		// sem_post(philo->table->sem_check);
 		exit(1);

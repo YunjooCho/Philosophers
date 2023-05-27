@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 19:47:29 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/27 19:48:16 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/27 20:42:22 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@ int	is_dying(t_philo *philo)
 		// sem_post(philo->table->sem_print);
 		return (1);
 	}
+	return (0);
+}
+
+int	check_eatcnt(t_philo *philo)
+{
+	if (philo->table->must_eat_cnt != -1 && \
+		philo->eat_cnt == philo->table->must_eat_cnt)
+		return (1);
 	return (0);
 }
 

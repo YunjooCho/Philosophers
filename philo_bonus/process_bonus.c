@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 23:59:33 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/27 18:40:53 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/27 20:41:41 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,26 @@ void	philo_task(t_philo *philo)
 	}
 }
 
+void	wait_processes(t_table *table)
+{
+	int	ret;
+	int	count;
+	int	status;
+
+	count = 0;
+	while (1)
+	{
+		ret = waitpid(-1, &status, 0);
+		if (ret == -1)
+			exit(EXIT_FAILURE);
+		else
+			count++;
+		if (count)
+			kill_allprocesses(table);
+	}
+	exit(0);
+}
+
 void	kill_allprocesses(t_table *table)
 {
 	int		idx;
@@ -55,29 +75,9 @@ void	kill_allprocesses(t_table *table)
 		philo_pid = table->philos[idx].pid;
 		thread_kill(&table->philos[idx]);
 		kill(philo_pid, SIGKILL);
-		// printf("Dead philo id : %d\n", table->philos[idx].philo_id);
 		idx++;
+		// printf("Dead philo id : %d\n", table->philos[idx].philo_id);
 	}
 	sem_post(table->sem_check);
 	sem_post(table->sem_print);
-}
-
-void	wait_processes(t_table *table)
-{
-	int	ret;
-	int	count;
-	int	status;
-
-	count = 0;
-	while (count < table->philo_cnt)
-	{
-		ret = waitpid(-1, &status, 0);
-		if (ret == -1)
-			exit(EXIT_FAILURE);
-		else
-			count++;
-		if (count)
-			kill_allprocesses(table);
-	}
-	exit(0);
 }
