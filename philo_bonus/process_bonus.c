@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 23:59:33 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/25 19:06:37 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/27 18:12:07 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 int	create_process(t_table *table)
 {
 	int	idx;
-	int	result;
 
 	idx = 0;
-	result = 0;
 	table->start_time = get_now();
 	while (idx < table->philo_cnt)
 	{
@@ -35,7 +33,7 @@ int	create_process(t_table *table)
 void	philo_task(t_philo *philo)
 {
 	if (philo->philo_id % 2 == 0)
-		usleep(philo->table->time_to_die / 2);
+		ft_usleep(philo->table->time_to_die / 2);
 	while (1)
 	{
 		pickup_forks(philo);

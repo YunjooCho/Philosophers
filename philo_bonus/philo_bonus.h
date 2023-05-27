@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 17:11:43 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/25 18:42:04 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/27 18:13:51 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ t_philo			*malloc_philosarr(t_table *table);
 int				init_philo(t_philo *philo, t_table *table, int idx);
 unsigned long	get_now(void);
 unsigned long	get_printms(unsigned long start_time);
+void			ft_usleep(unsigned long target_time);
 int				is_dying(t_philo *philo);
 void			thread_kill(t_philo *philo);
 int				create_process(t_table *table);
