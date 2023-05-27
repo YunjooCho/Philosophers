@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 19:06:40 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/27 18:13:00 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/27 19:47:06 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,13 @@ int	counting_time(t_philo *philo, int flag)
 	t1 = get_now();
 	t2 = t1;
 	target_time = 0;
+	sem_wait(philo->table->sem_check);
 	if (is_dying(philo))
 	{
-		thread_kill(philo);
-		exit(1);
+		// sem_post(philo->table->sem_check);
+		return (-1);
 	}
+	sem_post(philo->table->sem_check);
 	if (flag == EATING)
 		target_time = (unsigned long)philo->table->time_to_eat;
 	else if (flag == SLEEPING)
@@ -68,11 +70,13 @@ int	counting_time(t_philo *philo, int flag)
 	while (t1 - t2 + 1 <= target_time)
 	{
 		usleep(100);
+		sem_wait(philo->table->sem_check);
 		if (is_dying(philo))
 		{
-			thread_kill(philo);
-			exit(1);
+			// sem_post(philo->table->sem_check);
+			return (-1);
 		}
+		sem_post(philo->table->sem_check);
 		t1 = get_now();
 	}
 	return (0);

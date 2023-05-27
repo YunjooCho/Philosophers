@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:25:19 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/13 16:09:20 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/05/27 19:39:19 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void	translate_aton(char **av, t_table *table)
 	table->time_to_die = ph_atoi(av[2]);
 	table->time_to_eat = ph_atoi(av[3]);
 	table->time_to_sleep = ph_atoi(av[4]);
-	// table->is_dying = 0;
 	if (!av[5])
 		table->must_eat_cnt = -1;
 	else

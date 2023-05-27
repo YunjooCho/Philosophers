@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 23:59:33 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/27 18:12:07 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/05/27 18:40:53 by yunjcho          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,11 @@ void	kill_allprocesses(t_table *table)
 		philo_pid = table->philos[idx].pid;
 		thread_kill(&table->philos[idx]);
 		kill(philo_pid, SIGKILL);
-		printf("Dead philo id : %d\n", table->philos[idx].philo_id);
+		// printf("Dead philo id : %d\n", table->philos[idx].philo_id);
 		idx++;
 	}
+	sem_post(table->sem_check);
+	sem_post(table->sem_print);
 }
 
 void	wait_processes(t_table *table)
