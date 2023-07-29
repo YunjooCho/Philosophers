@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 23:59:33 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/27 20:41:41 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/07/29 21:43:45 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,12 @@ void	wait_processes(t_table *table)
 		if (ret == -1)
 			exit(EXIT_FAILURE);
 		else
+		{
 			count++;
-		if (count)
+			//Debugging
+			// printf("wait_processed count : %d\n", count);
+		}
+		if (count && table->must_eat_cnt == -1)
 			kill_allprocesses(table);
 	}
 	exit(0);
@@ -73,7 +77,7 @@ void	kill_allprocesses(t_table *table)
 	while (idx < table->philo_cnt)
 	{
 		philo_pid = table->philos[idx].pid;
-		thread_kill(&table->philos[idx]);
+		process_kill(&table->philos[idx]);
 		kill(philo_pid, SIGKILL);
 		idx++;
 		// printf("Dead philo id : %d\n", table->philos[idx].philo_id);

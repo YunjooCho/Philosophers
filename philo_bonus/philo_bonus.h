@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 17:11:43 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/27 20:27:44 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/07/29 21:29:30 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void			ft_usleep(unsigned long target_time);
 int				counting_time(t_philo *philo, int flag);
 int				is_dying(t_philo *philo);
 int				check_eatcnt(t_philo *philo);
-void			thread_kill(t_philo *philo);
+void			process_kill(t_philo *philo);
 int				create_process(t_table *table);
 void			wait_processes(t_table *table);
 void			kill_allprocesses(t_table *table);

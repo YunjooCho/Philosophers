@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 19:19:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/27 20:26:39 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/07/29 21:50:31 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,21 @@ int	eating(t_philo *philo)
 {
 	if (print_start(philo, EATING) < 0)
 	{
-		thread_kill(philo);
+		process_kill(philo);
 		exit(1);
 	}
 	if (counting_time(philo, EATING) < 0)
 	{
-		thread_kill(philo);
+		process_kill(philo);
 		exit(1);
 	}
 	sem_wait(philo->table->sem_check);
 	philo->lasteat_time = get_now();
 	philo->eat_cnt++;
+	
+	//Debugging
+	// printf("philo id : %d eat count : %d\n", philo->philo_id, philo->eat_cnt);
+
 	sem_post(philo->table->sem_check);
 	return (0);
 }
