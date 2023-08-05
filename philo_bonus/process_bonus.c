@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 23:59:33 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/07/29 21:43:45 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/08/05 16:19:43 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,12 @@ void	wait_processes(t_table *table)
 			//Debugging
 			// printf("wait_processed count : %d\n", count);
 		}
-		if (count && table->must_eat_cnt == -1)
+		//Debugging
+		printf("wait_processed status : %d\n", status);
+		if (count && table->must_eat_cnt == -1 && status)
 			kill_allprocesses(table);
 	}
-	exit(0);
+	exit(EXIT_SUCCESS);
 }
 
 void	kill_allprocesses(t_table *table)

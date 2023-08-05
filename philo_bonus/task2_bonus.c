@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 19:19:07 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/07/29 21:50:31 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/08/05 16:18:18 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ int	eating(t_philo *philo)
 	if (print_start(philo, EATING) < 0)
 	{
 		process_kill(philo);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	if (counting_time(philo, EATING) < 0)
 	{
 		process_kill(philo);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	sem_wait(philo->table->sem_check);
 	philo->lasteat_time = get_now();
@@ -45,10 +45,15 @@ int	putdown_forks(t_philo *philo)
 	sem_post(philo->table->sem_forks);
 	sem_post(philo->table->sem_forks);
 	sem_wait(philo->table->sem_check);
-	if (is_dying(philo) || check_eatcnt(philo))
+	if (check_eatcnt(philo))
 	{
 		// sem_post(philo->table->sem_check);
-		exit(1);
+		exit(EXIT_SUCCESS);
+	}
+	if (is_dying(philo))
+	{
+		// sem_post(philo->table->sem_check);
+		exit(EXIT_FAILURE);
 	}
 	sem_post(philo->table->sem_check);
 	return (0);
@@ -60,13 +65,13 @@ int	sleeping(t_philo *philo)
 	if (is_dying(philo))
 	{
 		// sem_post(philo->table->sem_check);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	sem_post(philo->table->sem_check);
 	if (print_start(philo, SLEEPING) < 0)
-		exit(1);
+		exit(EXIT_FAILURE);
 	if (counting_time(philo, SLEEPING) < 0)
-		exit(1);
+		exit(EXIT_FAILURE);
 	return (0);
 }
 
@@ -76,10 +81,10 @@ int	thinking(t_philo *philo)
 	if (is_dying(philo))
 	{
 		// sem_post(philo->table->sem_check);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	sem_post(philo->table->sem_check);
 	if (print_start(philo, THINKING) < 0)
-		exit(1);
+		exit(EXIT_FAILURE);
 	return (0);
 }

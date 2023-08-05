@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 21:57:39 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/05/27 19:46:43 by yunjcho          ###   ########seoul.kr  */
+/*   Updated: 2023/08/05 16:16:50 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	print_error(char *str)
 		printf("Error\n");
 	else if (*str)
 		printf("Error : %s\n", str);
-	exit(1);
+	exit(EXIT_FAILURE);
 }
 
 int	print_start(t_philo *philo, int flag)

@@ -6,7 +6,7 @@
 /*   By: yunjcho <yunjcho@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 03:12:15 by yunjcho           #+#    #+#             */
-/*   Updated: 2023/07/29 21:58:51 by yunjcho          ###   ########.fr       */
+/*   Updated: 2023/08/05 16:16:50 by yunjcho          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ void	pickup_forks(t_philo *philo)
 	if (print_start(philo, TAKEFORKS) < 0)
 	{
 		process_kill(philo);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	check_rightfork(philo);
 	if (print_start(philo, TAKEFORKS) < 0)
 	{
 		process_kill(philo);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -37,7 +37,7 @@ void	check_leftfork(t_philo *philo)
 		{
 			// sem_post(philo->table->sem_check);
 			process_kill(philo);
-			exit(1);
+			exit(EXIT_FAILURE);
 		}
 		if (!philo->table->useable_forkcnt)
 		{
@@ -66,7 +66,7 @@ void	check_rightfork(t_philo *philo)
 		{
 			// sem_post(philo->table->sem_check);
 			process_kill(philo);
-			exit(1);
+			exit(EXIT_FAILURE);
 		}
 		if (philo->rightfork_cnt == -1)
 		{

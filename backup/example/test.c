@@ -35,7 +35,7 @@ void *parallel(int num_tasks)
 void *print_usage(int argc, char *argv[]) {
   (void) argc;
   printf("Usage: %s serial|parallel num_tasks\n", argv[0]);
-  exit(1);
+  exit(EXIT_FAILURE);
 }
 
 int main(int argc, char **argv) {
